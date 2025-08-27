@@ -1,6 +1,9 @@
+import { main } from "motion/react-client";
 
 export default function Home() {
   return (
-  <h1></h1>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 min-h-screen "  >
+      <h1 className="text-4xl font-bold">Home page</h1>
+    </main>
   );
 }
