@@ -76,19 +76,20 @@ const HeroSection = () => {
         {/* Dynamic paragraph */}
         <div className="w-full space-y-6 ">
           <motion.p
-            className="font-normal text-base md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mx-auto md:mx-0 max-w-[70%] mt-8 p-2 text-left tracking-wide leading-relaxed  flex-wrap "
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="font-normal text-base md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mx-auto md:mx-0 max-w-[70%] mt-8 p-2 text-left tracking-wide leading-relaxed flex-wrap"
+            initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
             <span>
               I help brands and creators tell powerful stories through seamless video
               <motion.span
                 key={dynamicWords[index].word}
-                className={` ml-1.5 border-2 border-white/20 bg-white/30 py-2 px-4 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
+                className={`ml-1.5 border-2 border-white/20 bg-white/30 py-2 px-4 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
+                initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(6px)" }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
                 {displayedWord}
               </motion.span>
