@@ -1,9 +1,10 @@
 import { main } from "motion/react-client";
-
+import HeroSection from "@/app/componentes/HeroSection"
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 min-h-screen "  >
-      <h1 className="text-4xl font-bold">Home page</h1>
+    <main className="bg-black/[0.96] min-h-screen antialiased bg-grid-white/[0.02]"  >
+
+      <HeroSection />
     </main>
   );
 }
