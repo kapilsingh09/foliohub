@@ -1,4 +1,4 @@
- [
+{"courese": [
     {
         "id": 1,
         "title": "Beginner Guitar Course",
@@ -100,3 +100,4 @@
         "img": "https://images.unsplash.com/photo-1465101178521-c1a4c8a0a8b7"
     }
 ]
+}
