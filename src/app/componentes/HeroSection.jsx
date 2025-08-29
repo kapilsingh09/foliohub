@@ -30,6 +30,12 @@ const dynamicWords = [
   { word: "clients", color: "text-white" }
 ];
 
+const scrollDown =() =>{
+  window.scrollTo({
+    top: window.innerHeight,
+    behavior: "smooth"
+  });
+}
 const HeroSection = () => {
   const [index, setIndex] = useState(0);
   const [displayedWord, setDisplayedWord] = useState("");
@@ -85,7 +91,7 @@ const HeroSection = () => {
               I help brands and creators tell powerful stories through seamless video
               <motion.span
                 key={dynamicWords[index].word}
-                className={`ml-1.5 border-2 border-white/20 bg-white/30 py-2 px-4 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
+                className={`ml-1.5 border-2 border-white/20 bg-white/30 py-1.5 px-4 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
                 initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(6px)" }}
                 animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(6px)" }}
@@ -104,31 +110,42 @@ const HeroSection = () => {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-16 w-full transition-all duration-500 ease-in-out z-9">
-        <div className="absolute inset-0 flex items-center justify-between h-full px-8 text-md transition-all duration-500 ease-in-out">
-          <Link
-            href="/videoeditor"
-            className="flex text-white font-medium underline  cursor-pointer transition-all duration-300 ease-in-out"
-          >
-            Discover my latest edits
-            <ArrowUpRight className="ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/videoeditor"
-            className="flex items-center justify-center text-white font-medium hover:underline transition-all duration-300 ease-in-out"
-          >
-            by Vichi — Video Editor
-            <ArrowUpRight className="ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-3" />
-          </Link>
-          <div className="flex space-x-2">
-            <button className="h-8 w-8 rounded-full border border-white/30 flex items-center justify-center hover:cursor-pointer hover:bg-white/10 transition-all duration-300 ease-in-out">
-              <ArrowDown className="transition-transform duration-300 ease-in-out hover:translate-y-1" />
-            </button>
-            <button className="h-8 w-8 rounded-full border border-white/30 flex items-center justify-center hover:cursor-pointer hover:bg-white/10 transition-all duration-300 ease-in-out">
-              <ArrowDown className="transition-transform duration-300 ease-in-out hover:translate-y-1" />
-            </button>
-          </div>
-        </div>
-      </div>
+  <div className="absolute inset-0 flex items-center justify-between h-full px-8 text-md transition-all duration-500 ease-in-out">
+
+    {/* First Link */}
+    <Link
+      href="/videoeditor"
+      className="flex text-white font-medium hover:underline cursor-pointer transition-all duration-300 ease-in-out"
+    >
+      Discover my latest edits
+      <ArrowUpRight className=" transition-transform duration-300 ease-in-out hover:translate-x-1" />
+    </Link>
+
+    {/* Second Link */}
+    <Link
+      href="/videoeditor"
+      className="flex items-center justify-center text-white font-medium hover:underline transition-all duration-300 ease-in-out"
+    >
+      By Vichi — Video Editor
+      <ArrowUpRight className="  transition-transform duration-300 ease-in-out hover:translate-x-3" />
+    </Link>
+
+    {/* Buttons */}
+    <div className="flex space-x-2">
+      <button
+      onClick={()=>{scrollDown()}}
+      className="h-8 w-8 rounded-full border border-white/30 flex items-center justify-center hover:cursor-pointer hover:bg-white/10 transition-all duration-300 ease-in-out">
+        <ArrowDown className="transition-transform duration-300 ease-in-out hover:translate-y-1" />
+      </button>
+      <button
+      onClick={()=>{scrollDown()}}
+      className="h-8 w-8 rounded-full border border-white/30 flex items-center justify-center hover:cursor-pointer hover:bg-white/10 transition-all duration-300 ease-in-out">
+        <ArrowDown className="transition-transform duration-300 ease-in-out hover:translate-y-1" />
+      </button>
+    </div>
+  </div>
+</div>
+
 
     </div>
   );

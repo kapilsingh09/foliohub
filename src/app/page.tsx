@@ -1,7 +1,5 @@
-import { main } from "motion/react-client";
 import HeroSection from "@/app/componentes/HeroSection"
 import FeaturedSection from "./componentes/FeaturedSection";
-import WhyChooseUs from './componentes/whyChooseUs'
 import Griddd from './componentes/girddd'
 import HeroScroll from './componentes/HeroScroll'
 import GridLayout from './componentes/LayoutGrid'

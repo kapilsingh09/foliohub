@@ -46,14 +46,14 @@ const data2 = [
 const girddd = () => {
   return (
     // <div className=''>
-    //   <div className="flex flex-col items-center w-full overflow-hidden px-4 sm:px-6 lg:px-8">
-    //     <h2 className="text-2xl sm:text-3xl font-bold text-white/30  mb-6 text-center">
-    //       Here our harmony : Voices of Success
-    //     </h2>
-    //    
-    //   </div>
     // </div>
-     <div className="relative flex h-[50vh] w-full items-center justify-center bg-white dark:bg-black">
+    // <div className="flex flex-col items-center w-full overflow-hidden px-4 sm:px-6 lg:px-8">
+    //   <h2 className="text-2xl sm:text-3xl font-bold text-white/30  mb-6 text-center">
+    //     Here our harmony : Voices of Success
+    //   </h2>
+     
+    // </div>
+     <div className="relative flex min-h-[40rem] w-full items-center justify-center bg-white dark:bg-black">
       <div
         className={cn(
           "absolute inset-0 flex",
@@ -70,7 +70,7 @@ const girddd = () => {
         Backgrounds
         </p> */}
        <div className="w-full max-w-6xl">
-        <div className='flex items-center justify-center'> <h2 className="text-5xl sm:text-5xl font-bold text-white z-999  mb-6 text-center">
+        <div className='flex items-center justify-center'> <h2 className="text-5xl sm:text-6xl font-bold text-white z-999  mb-6 text-center">
              Here our harmony : Voices of Success
          </h2>
           </div>
