@@ -39,8 +39,8 @@ const Navbar = () => {
               href="/"
               className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-1"
             >
-              Dhruv_
-              <span className="text-pink-400 font-bold text-lg align-super">Edits</span>
+              Dhruv
+              {/* <span className="text-pink-400 font-bold text-lg align-super">Edits</span> */}
             </Link>
 
             {/* Nav Links */}
