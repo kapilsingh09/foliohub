@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState,useEffect, useRef } from "react";
 import { X, UserPlus, Play, Pause, Volume2, VolumeX, Heart, Share2, Download, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CopyEmailButton from "./ui/CopyEmailButton";
 import { div } from "motion/react-client";
 import Player from "./player/Player";
+import { BackgroundLines } from "./ui/background-lines";
 
 const videos = [
   {
@@ -25,6 +26,14 @@ const videos = [
   },
 ];
 
+const texts = [
+  "Cinematic Visuals",
+  "Rhythm in Motion",
+  "Stories Through Color",
+  "Edits That Leave a Mark"
+];
+
+
 const SixDivLayout = () => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
@@ -33,8 +42,23 @@ const SixDivLayout = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [viewCount, setViewCount] = useState(1247);
   const constraintsRef = useRef(null);
+
+
+  const [index, setIndex] = useState(0);
+
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % texts.length);
+    }, 3000); // change every 3s
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const words = ' Cinematic Visuals';
   const handlePlayPause = () => {
     if (videoRef.current) {
       if (isPlaying) {
@@ -63,48 +87,99 @@ const SixDivLayout = () => {
       {/* ================= TOP SECTION ================= */}
       <div className="flex gap-6 mb-6">
         {/* ---------- LEFT HERO ---------- */}
-        <div className="relative h-[100vh] w-1/2 rounded-2xl shadow-lg overflow-hidden">
-          <img src="/davinci-resolve-20-color (1).jpg"
-          
-          className="absolute inset-0 w-full h-full object-contain rounded-2xl"
-          alt="" />
+        <div className="relative h-[100vh] w-1/2 border border-white/20 rounded-3xl shadow-lg overflow-hidden">
+      <BackgroundLines>
+        {/* Center Text */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+          {/* Animated H1 only */}
+          <div className="h-[60px] flex items-center">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="text-5xl font-bold text-white drop-shadow-lg tracking-wide"
+              >
+                {texts[index]}
+              </motion.h1>
+            </AnimatePresence>
+          </div>
+
+          {/* Static Subtext */}
+          <p className="mt-4 text-lg text-neutral-300 max-w-md leading-relaxed">
+            Hey, I&apos;m <span className="text-pink-400 font-semibold">Dhruv</span> — 
+            blending motion, pacing, and vibrant color to craft edits 
+            that <span className="text-purple-400">feel cinematic</span>.
+          </p>
+
           <motion.div
-            initial={{ opacity: 0, y: 80 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="absolute bottom-0 left-0 w-full p-7 
-           bg-gradient-to-b from-transparent via-black/60 to-black 
-           rounded-b-2xl overflow-hidden outline-none "
-          >
-            <h1 className="text-3xl font-bold text-white mb-3 drop-shadow-lg">
-              Dhruv&apos;s Editor
-            </h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 1 }}
-              className="text-sm leading-relaxed text-neutral-300"
-            >
-              Hey, I&apos;m <span className="text-pink-400 font-semibold">Dhruv</span>.  
-              I create cinematic Instagram edits—music, motion, and color that tell a story.  
-              From high-energy car reels to moody travel montages, I blend rhythm, pacing, and vibrant color grading  
-              to craft edits that grab attention and leave a lasting impression.
-            </motion.p>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "120px" }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="h-[4px] mt-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full"
-            />
-            <motion.div
-              animate={{ y: [0, -4, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              className="absolute bottom-3 right-5 text-neutral-400 text-xs"
-            >
-              Scroll for more ↓
-            </motion.div>
-          </motion.div>
+            initial={{ width: 0 }}
+            animate={{ width: "140px" }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="h-[4px] mt-6 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full"
+          />
         </div>
+
+        {/* Bottom Info */}
+        <div className="absolute bottom-4 left-5 flex items-center gap-6 text-neutral-400 text-xs">
+  {[
+    { src: "/log/Blender-Logo-3D-Software-84623.png", label: "Blender" },
+    { src: "/log/images.jpeg", label: "Colorist" },
+    { src: "/log/pngwing.com.png", label: "DaVinci" },
+  ].map((item, i) => (
+    <div key={i} className="relative group">
+      <motion.div
+        whileHover={{ scale: 1.15 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="bg-white/10 backdrop-blur-sm border border-white/30 
+                   rounded-xl p-2 shadow-md flex items-center justify-center 
+                   hover:shadow-pink-500/30 hover:border-pink-400/50"
+      >
+        <img
+          src={item.src}
+          alt={item.label}
+          className="inline-block w-6 h-6 object-contain"
+        />
+      </motion.div>
+      {/* Tooltip */}
+      <span className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 
+                       bg-black/80 text-white text-[10px] px-2 py-1 rounded-md transition-all">
+        {item.label}
+      </span>
+    </div>
+  ))}
+</div>
+
+
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: 2.5,
+            ease: [0.4, 0, 0.2, 1]
+          }}
+          className="absolute bottom-3 right-5 text-neutral-400 text-xs"
+        >
+          <motion.span
+            initial={{ opacity: 0.7 }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 2.5,
+              ease: "easeInOut"
+            }}
+          >
+            Scroll for more ↓
+          </motion.span>
+        </motion.div>
+      </BackgroundLines>
+    </div>
+
 
         {/* ---------- RIGHT SIDE ---------- */}
         <div className="w-1/2 flex flex-col gap-4 ">
@@ -184,7 +259,7 @@ const SixDivLayout = () => {
       {/* ================= PLAYER MODAL ================= */}
       <AnimatePresence>
         {isCardOpen && activeVideo && (
-          <Player video={activeVideo} close={() => setIsCardOpen(false)}  />
+          <Player video={activeVideo} close={() => setIsCardOpen(false)} />
         )}
       </AnimatePresence>
 
