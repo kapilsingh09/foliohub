@@ -87,7 +87,7 @@ const SixDivLayout = () => {
       {/* ================= TOP SECTION ================= */}
       <div className="flex gap-6 mb-6">
         {/* ---------- LEFT HERO ---------- */}
-        <div className="relative h-[100vh] w-1/2 border border-white/20 rounded-3xl shadow-lg overflow-hidden">
+        <div className="relative h-[100vh] w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden">
       <BackgroundLines>
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
@@ -189,7 +189,7 @@ const SixDivLayout = () => {
               setActiveVideo(videos[0]);
               setIsCardOpen(true);
             }}
-            className="relative h-[50vh] rounded-2xl border border-black overflow-hidden shadow-lg hover:cursor-pointer group bg-gradient-to-b from-black via-black/80 to-black/60"
+            className="relative h-[50vh] rounded-3xl border border-black overflow-hidden shadow-lg hover:cursor-pointer group bg-gradient-to-b from-black via-black/80 to-black/60"
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
@@ -208,6 +208,7 @@ const SixDivLayout = () => {
             </div>
             <motion.div
               className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ height: "40%" }} // Added height to overlay
               initial={{ scale: 0 }}
               whileHover={{ scale: 1 }}
             >
@@ -234,6 +235,16 @@ const SixDivLayout = () => {
                 <h2 className="text-2xl font-bold text-white">{videos[1].title}</h2>
                 <p className="text-sm text-neutral-400">{videos[1].description}</p>
               </div>
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ height: "40%" }} // Added height to overlay
+                initial={{ scale: 0 }}
+                whileHover={{ scale: 1 }}
+              >
+                <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
+                  <Play className="w-8 h-8 text-white" fill="white" />
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* BMW */}
@@ -251,9 +262,20 @@ const SixDivLayout = () => {
                 <h2 className="text-2xl font-bold text-white">{videos[2].title}</h2>
                 <p className="text-sm text-neutral-400">{videos[2].description}</p>
               </div>
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ height: "40%" }} // Added height to overlay
+                initial={{ scale: 0 }}
+                whileHover={{ scale: 1 }}
+              >
+                <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
+                  <Play className="w-8 h-8 text-white" fill="white" />
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
+        
       </div>
 
       {/* ================= PLAYER MODAL ================= */}

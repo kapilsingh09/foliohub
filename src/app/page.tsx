@@ -15,8 +15,8 @@ export default function Home() {
       {/* <FeaturedSection /> */}
       {/* <WhyChooseUs /> */}
 
-      <Griddd />
-        
+      {/* <Griddd /> */}
+
     </main>
   );
 }
