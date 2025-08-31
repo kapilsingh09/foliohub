@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { CheckCircle, Mail, User, MessageCircle, Send } from "lucide-react";
-import { requestToBodyStream } from "next/dist/server/body-streams";
+import { Vortex } from "./ui/vortex";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -75,15 +75,20 @@ const ContactForm = () => {
   }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen p-6 bg-gradient-to-br from-slate-50 to-gray-100">
-      <div className="w-full max-w-lg bg-gray-900 rounded-2xl shadow-xl border border-gray-700">
+    
+    <div className="relative flex items-center justify-center min-h-screen w-full overflow-auto bg-transparent">
+       <Vortex
+        backgroundColor="black"
+        className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
+      >
+      <div className="w-full max-w-lg rounded-2xl shadow-xl border border-gray-700 bg-white/10 backdrop-blur-lg backdrop-saturate-150">
         {/* Header */}
         <div className="px-8 pt-8 pb-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-2">
-            Let's Work Together
+            Let&apos;s Work Together
           </h2>
-          <p className="text-gray-400">
-            Ready to start your next project? I'd love to hear from you.
+          <p className="text-gray-200">
+            Ready to start your next project? I&apos;d love to hear from you.
           </p>
         </div>
 
@@ -92,14 +97,14 @@ const ContactForm = () => {
         <div className="px-8 pb-8 space-y-6">
           {/* Name Field */}
           <div className="space-y-2">
-            <label className="flex items-center text-sm font-semibold text-gray-300">
-              <User className="w-4 h-4 mr-2 text-gray-400" />
+            <label className="flex items-center text-sm font-semibold text-gray-200">
+              <User className="w-4 h-4 mr-2 text-gray-300" />
               Full Name
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-600 rounded-lg p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
               placeholder="Enter your full name"
               type="text"
               required
@@ -108,14 +113,14 @@ const ContactForm = () => {
 
           {/* Email Field */}
           <div className="space-y-2">
-            <label className="flex items-center text-sm font-semibold text-gray-300">
-              <Mail className="w-4 h-4 mr-2 text-gray-400" />
+            <label className="flex items-center text-sm font-semibold text-gray-200">
+              <Mail className="w-4 h-4 mr-2 text-gray-300" />
               Email Address
             </label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-600 rounded-lg p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
               placeholder="Enter your email address"
               type="email"
               required
@@ -124,14 +129,14 @@ const ContactForm = () => {
 
           {/* Message Field */}
           <div className="space-y-2">
-            <label className="flex items-center text-sm font-semibold text-gray-300">
-              <MessageCircle className="w-4 h-4 mr-2 text-gray-400" />
+            <label className="flex items-center text-sm font-semibold text-gray-200">
+              <MessageCircle className="w-4 h-4 mr-2 text-gray-300" />
               Project Details
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-600 rounded-lg p-4 h-32 resize-none text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 h-32 resize-none text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
               placeholder="Tell me about your project, timeline, and requirements..."
               required
             />
@@ -165,12 +170,14 @@ const ContactForm = () => {
               <strong className="text-white">Response Time:</strong> Within 24 hours
             </p>
             <p className="text-xs text-gray-400">
-              I'm committed to providing exceptional service and clear communication throughout our collaboration.
+              I&apos;m committed to providing exceptional service and clear communication throughout our collaboration.
             </p>
           </div>
         </div> */}
       </div>
+</Vortex>
     </div>
+    
   );
 };
 
