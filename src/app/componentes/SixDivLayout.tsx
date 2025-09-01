@@ -37,17 +37,9 @@ const texts = [
 const SixDivLayout = () => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [isLiked, setIsLiked] = useState(false);
-  const [viewCount, setViewCount] = useState(1247);
-  const constraintsRef = useRef(null);
 
 
   const [index, setIndex] = useState(0);
-
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
 
   useEffect(() => {
@@ -58,29 +50,6 @@ const SixDivLayout = () => {
   }, []);
 
 
-  const words = ' Cinematic Visuals';
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleMuteToggle = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setViewCount((prev) => (isLiked ? prev - 1 : prev + 1));
-  };
 
   return (
     <div className="min-h-screen w-full p-8">

@@ -9,7 +9,10 @@ export default function Home() {
       <SixDivLayout />
 
       {/* <Griddd /> */}
+      <div className="flex gap-6">
+
 <ContactForm />
+      </div>
     </main>
   );
 }

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         from: 'onboarding@resend.dev',
         to: 'temprary526@gmail.com',
         subject: 'Hello World',
-        html: `<p>Hey there <strong>first email</strong>!</p>
+        html: `<p>Hey there <strong>You got a mail! </strong>!</p>
         <P>${name} </p>
         <P>${email} </p>
         <P>${message} </p>

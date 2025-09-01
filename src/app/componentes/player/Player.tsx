@@ -1,299 +1,279 @@
-"use client";
+  "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, Share2, Eye, Play, Pause, Volume2, VolumeX, Settings, Monitor, Scissors, Palette, Zap } from "lucide-react";
+  import React, { useState, useRef, useEffect } from "react";
+  import { motion, AnimatePresence } from "framer-motion";
+  import { X, Heart, Share2, Eye, Play, Pause, Volume2, VolumeX, Settings, Monitor, Scissors, Palette, Zap } from "lucide-react";
 
-interface VideoData {
-  src: string;
-  title: string;
-  description: string;
-  views: number | string;
-  duration?: string;
-  thumbnail?: string;
-}
+  interface VideoData {
+    src: string;
+    title: string;
+    description: string;
+    views: number | string;
+    duration?: string;
+    thumbnail?: string;
+  }
 
-interface PlayerProps {
-  close: () => void;
-  video: VideoData;
-}
+  interface PlayerProps {
+    close: () => void;
+    video: VideoData;
+  }
 
-const Player: React.FC<PlayerProps> = ({ close, video }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [showControls, setShowControls] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>();
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const Player: React.FC<PlayerProps> = ({ close, video }) => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [showControls, setShowControls] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [playRequested, setPlayRequested] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const controlsTimeoutRef = useRef<NodeJS.Timeout>();
 
-  // Listen for fullscreen changes
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      if (document.fullscreenElement === videoRef.current) {
-        setIsFullscreen(true);
+    // Only trigger controls when mouse is over the video area, not the right panel
+    const videoContainerRef = useRef<HTMLDivElement>(null);
+
+    // Auto-hide controls when playing
+    useEffect(() => {
+      if (isPlaying) {
+        controlsTimeoutRef.current = setTimeout(() => {
+          setShowControls(false);
+        }, 3000);
       } else {
-        setIsFullscreen(false);
+        setShowControls(true);
       }
-    };
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
 
-  // Auto-hide controls when playing
-  useEffect(() => {
-    if (isPlaying) {
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    } else {
+      return () => {
+        if (controlsTimeoutRef.current) {
+          clearTimeout(controlsTimeoutRef.current);
+        }
+      };
+    }, [isPlaying]);
+
+    // Show controls on mouse move ONLY over the video area
+    const handleVideoMouseMove = () => {
       setShowControls(true);
-    }
-
-    return () => {
       if (controlsTimeoutRef.current) {
         clearTimeout(controlsTimeoutRef.current);
       }
-    };
-  }, [isPlaying]);
-
-  // Show controls on mouse move
-  const handleMouseMove = () => {
-    setShowControls(true);
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current);
-    }
-    if (isPlaying) {
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    }
-  };
-
-  const togglePlayPause = () => {
-    if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
+        controlsTimeoutRef.current = setTimeout(() => {
+          setShowControls(false);
+        }, 3000);
       }
-      setIsPlaying(!isPlaying);
-    }
-  };
+    };
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const toggleFullscreen = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement === videoRef.current) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
-    }
-  };
-
-  // Format time function
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Handle video metadata load
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-    }
-  };
-
-  // Handle time update
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  };
-
-  // Calculate progress percentage
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-
-  const editingSoftware = [
-    { name: "After Effects", icon: Zap },
-    { name: "Premiere Pro", icon: Scissors },
-    { name: "DaVinci Resolve", icon: Palette }
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{
-        background: isPlaying 
-          ? "rgba(0, 0, 0, 0.92)" 
-          : "rgba(0, 0, 0, 0.85)"
-      }}
-    >
-      {/* Backdrop blur effect */}
-      <div 
-        className="absolute inset-0 backdrop-blur-md"
-        style={{
-          backdropFilter: isPlaying ? "blur(12px)" : "blur(6px)",
-          transition: "backdrop-filter 0.3s ease"
-        }}
-      />
-      
-      <motion.div
-        ref={videoContainerRef}
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ type: "spring", duration: 0.4 }}
-        className={`relative w-full max-w-4xl max-h-[85vh] bg-gradient-to-br from-neutral-900/95 to-neutral-800/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10${isFullscreen ? " !rounded-none !shadow-none !border-0 !max-w-none !max-h-none" : ""}`}
-        onMouseMove={handleMouseMove}
-        style={
-          isFullscreen
-            ? {
-                width: "100vw",
-                height: "100vh",
-                maxWidth: "100vw",
-                maxHeight: "100vh",
-                borderRadius: 0,
-                boxShadow: "none",
-                border: 0,
-                background: "rgba(0,0,0,0.95)",
-              }
-            : undefined
+    const togglePlayPause = () => {
+      if (!videoRef.current) return;
+    
+      if (videoRef.current.paused) {
+        // Request play
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.warn("Play request failed:", error);
+          });
         }
+      } else {
+        // Pause directly
+        videoRef.current.pause();
+      }
+    };
+    
+
+    const toggleMute = () => {
+      if (videoRef.current) {
+        videoRef.current.muted = !isMuted;
+        setIsMuted(!isMuted);
+      }
+    };
+
+    const toggleFullscreen = () => {
+      if (videoRef.current) {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          videoRef.current.requestFullscreen();
+        }
+      }
+    };
+
+    // Format time function
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    // Handle video metadata load
+    const handleLoadedMetadata = () => {
+      if (videoRef.current) {
+        setDuration(videoRef.current.duration);
+      }
+    };
+
+    // Handle time update
+    const handleTimeUpdate = () => {
+      if (videoRef.current) {
+        setCurrentTime(videoRef.current.currentTime);
+      }
+    };
+
+    // Keep isPlaying state in sync with video element events
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
+
+      video.addEventListener("play", handlePlay);
+      video.addEventListener("pause", handlePause);
+
+      return () => {
+        video.removeEventListener("play", handlePlay);
+        video.removeEventListener("pause", handlePause);
+      };
+    }, []);
+
+    // Calculate progress percentage
+    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+    const editingSoftware = [
+      { name: "After Effects", icon: Zap },
+      { name: "Premiere Pro", icon: Scissors },
+      { name: "DaVinci Resolve", icon: Palette }
+    ];
+
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style={{
+          background: isPlaying 
+            ? "rgba(0, 0, 0, 0.92)" 
+            : "rgba(0, 0, 0, 0.85)"
+        }}
       >
-        {/* Close Button */}
-        <AnimatePresence>
-          {showControls && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              onClick={close}
-              className={`absolute top-4 right-4 z-10 text-white bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-2 transition-all duration-200${isFullscreen ? " !top-6 !right-6" : ""}`}
-              style={isFullscreen ? { position: "fixed" } : undefined}
+        {/* Backdrop blur effect */}
+        <div 
+          className="absolute inset-0 backdrop-blur-md"
+          style={{
+            backdropFilter: isPlaying ? "blur(12px)" : "blur(6px)",
+            transition: "backdrop-filter 0.3s ease"
+          }}
+        />
+        
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          transition={{ type: "spring", duration: 0.4 }}
+          className="relative w-full max-w-4xl max-h-[85vh] bg-gradient-to-br from-neutral-900/95 to-neutral-800/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+          // Remove onMouseMove from the main container
+        >
+          {/* Close Button */}
+          <AnimatePresence>
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                onClick={close}
+                className="absolute top-4 right-4 z-10 text-white bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
+              >
+                <X size={18} />
+              </motion.button>
+          </AnimatePresence>
+
+          <div className="flex h-full max-h-[85vh]">
+            {/* Video Container */}
+            <div
+              className="relative flex-[2] min-h-0"
+              ref={videoContainerRef}
+              onMouseMove={handleVideoMouseMove}
+              onMouseEnter={handleVideoMouseMove}
+              // Only the video area triggers overlay controls
             >
-              <X size={18} />
-            </motion.button>
-          )}
-        </AnimatePresence>
+              <video
+                ref={videoRef}
+                src={video.src}
+                className="w-full h-full object-cover rounded-l-2xl"
+                // onLoadedMetadata={handleLoadedMetadata}
+                onTimeUpdate={handleTimeUpdate}
+                // Remove onPlay/onPause handlers, handled by event listeners in useEffect
+              />
 
-        <div className={`flex h-full${isFullscreen ? " !h-screen" : ""} max-h-[85vh]`}>
-          {/* Video Container */}
-          <div className={`relative flex-[2] min-h-0${isFullscreen ? " !flex-[1] !w-full !h-full" : ""}`}>
-            <video
-              ref={videoRef}
-              src={video.src}
-              className={
-                isFullscreen
-                  ? "w-full h-full object-contain bg-black"
-                  : "w-full h-full object-cover rounded-l-2xl"
-              }
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              onLoadedMetadata={handleLoadedMetadata}
-              onTimeUpdate={handleTimeUpdate}
-              style={
-                isFullscreen
-                  ? {
-                      width: "100vw",
-                      height: "100vh",
-                      objectFit: "contain",
-                      background: "#000",
-                      borderRadius: 0,
-                    }
-                  : undefined
-              }
-            />
-
-            {/* Video Overlay Controls */}
-            <AnimatePresence>
-              {showControls && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className={
-                    isFullscreen
-                      ? "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"
-                      : "absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 rounded-l-2xl"
-                  }
-                >
-                  {/* Center Play/Pause Button */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={togglePlayPause}
-                      className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-4  text-white transition-all duration-200"
-                    >
-                      {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-                    </motion.button>
-                  </div>
-
-                  {/* Bottom Controls Bar */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <div className="flex items-center gap-3 text-white">
+              {/* Video Overlay Controls */}
+              <AnimatePresence>
+                {showControls && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 rounded-l-2xl"
+                  >
+                    {/* Center Play/Pause Button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={togglePlayPause}
-                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
+                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-4 text-white transition-all duration-200"
                       >
-                        {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                      </motion.button>
-                      
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={toggleMute}
-                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
-                      >
-                        {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                      </motion.button>
-
-                      {/* Video Progress/Time */}
-                      <div className="flex-1 flex items-center justify-center">
-                        <div className="bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-white/80">
-                          {duration > 0 ? `${formatTime(currentTime)} / ${formatTime(duration)}` : (video.duration || "0:00")}
-                        </div>
-                      </div>
-
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={toggleFullscreen}
-                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
-                      >
-                        <Monitor size={16} />
+                        {isPlaying ? <Pause size={24} /> : <Play size={24} />}
                       </motion.button>
                     </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
 
-          {/* Right Panel - Video Details */}
-          {!isFullscreen && (
-            <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl overflow-y-auto">
+                    {/* Bottom Controls Bar */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="flex items-center gap-3 text-white">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={togglePlayPause}
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
+                        >
+                          {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                        </motion.button>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={toggleMute}
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
+                        >
+                          {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                        </motion.button>
+
+                        {/* Video Progress/Time */}
+                        <div className="flex-1 flex items-center justify-center">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-white/80">
+                            {duration > 0 ? `${formatTime(currentTime)} / ${formatTime(duration)}` : (video.duration || "0:00")}
+                          </div>
+                        </div>
+
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={toggleFullscreen}
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200"
+                        >
+                          <Monitor size={16} />
+                        </motion.button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Right Panel - Video Details */}
+            <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl overflow-y-auto"
+              // Remove any mouse events here so right panel does NOT trigger overlay
+            >
               {/* Title and Description */}
-              <div className="space-y-3">
+              <div className="space-y-3 mt-3">
                 <h2 className="text-xl font-bold text-white leading-tight">
                   {video.title}
                 </h2>
@@ -304,8 +284,8 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
 
               {/* View Count */}
               <div className="flex items-center gap-2 text-neutral-400 text-sm">
-                <Eye size={14} />
-                <span>{video.views} views</span>
+                {/* <Eye size={14} /> */}
+                <span> Music Used :</span>
               </div>
 
               {/* Editing Software Used */}
@@ -398,11 +378,10 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
-  );
-};
+    );
+  };
 
-export default Player;
+  export default Player;

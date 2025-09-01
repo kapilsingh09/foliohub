@@ -5,6 +5,13 @@ import Link from "next/link";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
+  const scrollContact = ()=>{
+    window.scrollTo({
+      top:window.innerHeight * 3,
+      behavior:"smooth"
+    })
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -63,12 +70,13 @@ const Navbar = () => {
               >
                 About
               </Link>
-              <Link
+              <button
                 href="/contact"
+                onClick={scrollContact}
                 className="relative px-2 py-1 transition duration-200 hover:text-pink-400 after:content-[''] after:block after:h-0.5 after:bg-pink-400 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"
               >
                 Contact
-              </Link>
+              </button>
             </div>
           </div>
         </nav>
