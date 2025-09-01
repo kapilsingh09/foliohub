@@ -199,7 +199,8 @@ const SixDivLayout = () => {
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <video src={videos[1].src} autoPlay loop muted playsInline />
+              
+              <img src="/img/BMW-M4.jpeg" className="object-center object-cover h-full w-full" alt="" />
               <div className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl">
                 <h2 className="text-2xl font-bold text-white">{videos[1].title}</h2>
                 <p className="text-sm text-neutral-400">{videos[1].description}</p>
@@ -221,12 +222,17 @@ const SixDivLayout = () => {
               onClick={() => {
                 setActiveVideo(videos[2]);
                 setIsCardOpen(true);
-              }}
-              className="h-[48vh] w-1/2 rounded-2xl shadow-lg flex items-center justify-center relative overflow-hidden group cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <video src={videos[2].src} autoPlay muted loop playsInline />
+                }}
+                className="h-[48vh] w-1/2 rounded-2xl shadow-lg flex items-center justify-center relative overflow-hidden group cursor-pointer  border border-black"
+                whileHover={{ scale: 1.04 }}
+                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+              >
+                <img
+                src="/img/BMW-M3-editon.jpeg"
+                alt=""
+                // className="w-full //h-full object-cover transition-transform duration-500 group-hover:scale-105 rounded-2xl"
+               className="object-center object-cover h-full w-full"
+                />
               <div className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl">
                 <h2 className="text-2xl font-bold text-white">{videos[2].title}</h2>
                 <p className="text-sm text-neutral-400">{videos[2].description}</p>

@@ -1,6 +1,7 @@
 import HeroSection from "@/app/componentes/HeroSection"
 import SixDivLayout from "./componentes/SixDivLayout";
 import ContactForm from "./componentes/ContactForm";
+import About from "./componentes/About/About";
 
 export default function Home() {
   return (
@@ -9,10 +10,10 @@ export default function Home() {
       <SixDivLayout />
 
       {/* <Griddd /> */}
-      <div className="flex gap-6">
-
+  <About />
+      {/* <div className="flex gap-6"> */}
 <ContactForm />
-      </div>
+      {/* </div> */}
     </main>
   );
 }
