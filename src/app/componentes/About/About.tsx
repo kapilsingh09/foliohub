@@ -1,5 +1,4 @@
 import React from 'react'
-import { BackgroundRippleEffect } from '../ui/background-ripple-effect'
 import { SparklesCore } from '../ui/sparkles'
 
 const skills = ["Adobe Premiere Pro", "After Effects", "DaVinci Resolve", "Color Grading", "Cinematic Editing", "Motion Graphics"]
