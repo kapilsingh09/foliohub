@@ -19,7 +19,7 @@ const VideoSection = () => {
     <div className=" bg-black  min-h-screen w-full text-white flex items-center justify-center flex-col gap-8 p-8 md:p-9">
       <section className="flex flex-nowrap h-full w-full flex-1 items-center justify-between gap-8">
         {/* LEFT BOX */}
-        <div className="h-full w-1/2 flex flex-col justify-between gap-6 ">
+        <div className="h-full w-[60%] flex flex-col justify-between gap-6 ">
           {/* Top content */}
           <motion.div
             onMouseEnter={() => setIsHovered(true)}
