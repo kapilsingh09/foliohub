@@ -134,14 +134,25 @@ const VideoSlider = () => {
     : 0
 
   return (
-    <div className="min-h-screen h-full w-full bg-gradient-to-br from-slate-800 via-slate-900 to-black flex items-center justify-center ">
+    <div className="min-h-screen h-full w-[45%]  ">
+      <div className="flex items-center justify-center" style={{ height: "10vh" }}>
+        <div className="flex flex-col justify-center items-center">
+
+        <h1 className="text-3xl flex  text-start font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-4 text-center">
+          RightSection Component
+        </h1>
+        <p className="text-lg text-white text-center">
+          Explore transformation videos with interactive controls and smooth transitions. Enjoy a modern, immersive viewing experience!
+        </p>
+      </div>
+      </div>
       <motion.div
-        className="h-[100vh] border-white/30 border-2 relative flex flex-col justify-center items-center bg-black rounded-2xl  overflow-hidden group cursor-pointer shadow-2xl"
+        className="h-[90vh] w-full  border-white/30 border-2 relative flex flex-col items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}
       >
         {/* Enhanced Mac-style window buttons */}
-        <div className="absolute top-2 left-4 right-4 flex items-center justify-between z-50">
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between ">
           <div className="flex gap-2">
             <motion.button 
               className="h-3.5 w-3.5 bg-red-500 rounded-full border border-red-700 shadow-inner hover:bg-red-400 transition-colors"
@@ -175,7 +186,7 @@ const VideoSlider = () => {
         </div>
 
         {/* Video container with smooth transitions */}
-        <div className="h-[50vh] p-6 backdrop-blur-xl shadow-xl rounded-2xl w-full relative">
+        <div className="h-[50vh] w-full mt-10 p-8 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
           <div className="relative w-full h-full">
             <motion.video
               key={videoIndex}
@@ -195,7 +206,10 @@ const VideoSlider = () => {
               }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             />
-            
+
+            {/* Bottom black overlay */}
+            <div className="pointer-events-none absolute -bottom-1 left-0 w-full h-14 bg-gradient-to-b from-transparent  to-black   z-20" />
+
             {/* Smooth transition overlay */}
             <AnimatePresence>
               {isTransitioning && (
@@ -227,7 +241,7 @@ const VideoSlider = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.8, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="bg-white/90 backdrop-blur-xl rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-white/20"
+                    className="bg-white/50 backdrop-blur-xl rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-white/20"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-xl font-semibold text-gray-800">File Details</h3>
@@ -300,20 +314,21 @@ const VideoSlider = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+
           </div>
         </div>
 
         {/* Controls bar - following your structure */}
-        <div className="max-w-full w-[92%] flex flex-col px-3 py-2.5 bg-white/10 backdrop-blur-md mt-2 rounded-2xl">
-          <div className="w-full h-10 flex items-center justify-between">
-            <div className="flex items-center gap-2">   
+        <div className="w-[90%] max-w-4xl flex flex-col px-5 py-3 bg-white/10 backdrop-blur-md  rounded-2xl">
+          <div className="w-full h-12 flex items-center justify-between">
+            <div className="flex items-center gap-3">   
               <motion.button
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
                 onClick={handlePlay}
                 className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
               >
-                {isplay ? <Pause size={16} /> : <Play size={16} />}
+                {isplay ? <Pause size={18} /> : <Play size={18} />}
               </motion.button>
 
               <motion.button
@@ -322,12 +337,12 @@ const VideoSlider = () => {
                 onClick={handleMute}
                 className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
               >
-                {ismuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                {ismuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
               </motion.button>
             </div>
 
             <div className="w-full flex items-center justify-center">
-              <div className="hover:bg-white/30 backdrop-blur-sm p-3 rounded-full text-white transition-all duration-200 text-xs">
+              <div className="hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-white transition-all duration-200 text-sm font-medium">
                 {formatTime(currentTime)} / {durations[videoIndex] ? formatTime(durations[videoIndex]) : currentTime}
               </div>
             </div>
@@ -338,19 +353,20 @@ const VideoSlider = () => {
               onClick={handleFullscreen}
               className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
             >
-              <Maximize size={16} />
+              <Maximize size={18} />
             </motion.button>
           </div>
         </div>
 
         {/* Enhanced Video switch slider */}
-        <div className="w-1/2 mt-4">
+        <div className="w-full max-w-2xl mt-6 px-6">
           <div className="relative">
-            <div className="text-center mb-3">
-              <span className="text-white/60 text-xs font-medium">Switch Videos</span>
+            <div className="text-center mb-4">
+              <span className="text-white/80 text-sm font-medium">Switch Videos</span>
             </div>
             
-            <div className="relative h-12 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm shadow-xl">
+            <div className="relative h-14 bg-white/1 rounded-full border border-white/10 backdrop-blur-sm shadow-xl">
+          
               <input
                 type="range"
                 min={0}
@@ -361,6 +377,7 @@ const VideoSlider = () => {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
               
+              
               <div className="absolute inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full">
                 <div 
                   className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
@@ -369,16 +386,16 @@ const VideoSlider = () => {
               </div>
               
               <motion.div
-                className="absolute top-0.5 h-10 w-10 bg-white rounded-full shadow-2xl flex items-center justify-center"
-                style={{ left: `calc(${sliderValue}% - 20px)` }}
+                className="absolute top-0.5 h-12 w-12 bg-white/40 rounded-full shadow-2xl flex items-center justify-center"
+                style={{ left: `calc(${sliderValue}% - 24px)` }}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                <div className="w-4 h-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full" />
+                {/* <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full" /> */}
               </motion.div>
               
-              <div className="absolute -bottom-6 left-2 text-white/60 text-xs">Brothers</div>
-              <div className="absolute -bottom-6 right-2 text-white/60 text-xs">Creative</div>
+              <div className="absolute -bottom-8 left-4 text-white/70 text-sm font-medium">Brothers</div>
+              <div className="absolute -bottom-8 right-4 text-white/70 text-sm font-medium">Creative</div>
             </div>
           </div>
         </div>

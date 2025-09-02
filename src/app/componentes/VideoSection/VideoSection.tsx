@@ -145,11 +145,11 @@ const VideoSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </div>
-            <div className="mt-4 text-right w-1/2">
+            <div className="mt-4 text-left w-[45%] p-1">
               <h2 className="text-2xl font-bold comfortaa-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                 Motion Graphics
               </h2>
-              <p className="text-gray-300 text-base mt-2 leading-relaxed">
+              <p className="text-gray-300 text-base text-left mt-2 leading-relaxed">
                 Dynamic animations and motion graphics that captivate your audience with stunning visual storytelling.
               </p>
             </div>
