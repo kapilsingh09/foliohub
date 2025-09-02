@@ -1,7 +1,7 @@
 "use client"
-import { motion } from "motion/react"
+import { motion, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
-import { Pause, Play, Volume2, VolumeX, Maximize } from "lucide-react"
+import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
 
 const VideoSlider = () => {
   const [videoIndex, setVideoIndex] = useState(0)
@@ -9,17 +9,58 @@ const VideoSlider = () => {
   const [isplay, setIsplay] = useState(false)
   const [durations, setDurations] = useState<number[]>([])
   const [currentTime, setCurrentTime] = useState(0)
+  const [showInfo, setShowInfo] = useState(false)
+  const [sliderValue, setSliderValue] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const videos = [
-    "/brothers.mp4",
-    "/cc1 (1).mp4",
+    {
+      src: "/brothers.mp4",
+      name: "Brothers",
+      type: "MP4 Video",
+      size: "156.2 MB",
+      resolution: "1920 × 1080",
+      codec: "H.264",
+      duration: "4:32",
+      created: "Dec 15, 2023"
+    },
+    {
+      src: "/cc1 (1).mp4", 
+      name: "Creative Content",
+      type: "MP4 Video",
+      size: "89.7 MB",
+      resolution: "1280 × 720",
+      codec: "H.264",
+      duration: "3:18",
+      created: "Nov 28, 2023"
+    }
   ]
 
-  // Switch videos with range slider
+  // Switch videos with smooth blur transition
   const handleVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
-    setVideoIndex(value < 50 ? 0 : 1)
+    setSliderValue(value)
+    
+    const newIndex = value < 50 ? 0 : 1
+    
+    if (newIndex !== videoIndex) {
+      setIsTransitioning(true)
+      setIsplay(false)
+      
+      // Pause current video
+      if (videoRef.current) {
+        videoRef.current.pause()
+      }
+      
+      // Smooth transition with blur
+      setTimeout(() => {
+        setVideoIndex(newIndex)
+        setTimeout(() => {
+          setIsTransitioning(false)
+        }, 400)
+      }, 200)
+    }
   }
 
   // Get video duration
@@ -93,144 +134,256 @@ const VideoSlider = () => {
     : 0
 
   return (
-    <motion.div
-      className="h-[100vh] border-white/30 border-2 relative flex flex-col justify-center items-center bg-black rounded-2xl w-[40%] overflow-hidden group cursor-pointer shadow-2xl"
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.3 }}
-    >
-      {/* Video container */}
-      <div className="h-[50vh] p-6 backdrop-blur-xl shadow-xl rounded-2xl w-full relative">
-        <div className="relative w-full h-full">
-          <video
-            key={videoIndex}
-            ref={videoRef}
-            src={videos[videoIndex]}
-            onLoadedMetadata={(e) => handleMetadata(e, videoIndex)}
-            className="w-full h-full object-cover rounded-xl"
-            playsInline
-            preload="auto"
-            muted={ismuted}
-            onPlay={() => setIsplay(true)}
-            onPause={() => setIsplay(false)}
-          />
-        </div>
-      </div>
-
-      {/* Controls bar with seeker */}
-      <div className="max-w-full w-[93%] flex flex-col gap-2 px-2 py-1 bg-white/10 backdrop-blur-md mt-2 rounded-lg">
-        {/* seeker bar */}
-      
-
-        {/* buttons row */}
-        <div className="w-full h-10 flex items-center justify-between">
-          <div className="flex items-center gap-2">   
-            {/* Play / Pause */}
-            <motion.button
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              onClick={handlePlay}
-              className="bg-white/20 hover:bg-white/30 rounded-full p-1.5 text-white transition-all"
-              style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}
-            >
-              {isplay ? <Pause size={16} /> : <Play size={16} />}
-            </motion.button>
-
-            {/* Mute / Unmute */}
-            <motion.button
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              onClick={handleMute}
-              className="bg-white/20 hover:bg-white/30 rounded-full p-1.5 text-white transition-all"
-              style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}
-            >
-              {ismuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-            </motion.button>
+    <div className="min-h-screen h-full w-full bg-gradient-to-br from-slate-800 via-slate-900 to-black flex items-center justify-center ">
+      <motion.div
+        className="h-[100vh] border-white/30 border-2 relative flex flex-col justify-center items-center bg-black rounded-2xl  overflow-hidden group cursor-pointer shadow-2xl"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Enhanced Mac-style window buttons */}
+        <div className="absolute top-2 left-4 right-4 flex items-center justify-between z-50">
+          <div className="flex gap-2">
+            <motion.button 
+              className="h-3.5 w-3.5 bg-red-500 rounded-full border border-red-700 shadow-inner hover:bg-red-400 transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            />
+            <motion.button 
+              className="h-3.5 w-3.5 bg-yellow-400 rounded-full border border-yellow-500 shadow-inner hover:bg-yellow-300 transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            />
+            <motion.button 
+              className="h-3.5 w-3.5 bg-green-500 rounded-full border border-green-700 shadow-inner hover:bg-green-400 transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            />
           </div>
-
-          {/* Time display */}
-          <div className="w-full flex flex-col items-center justify-center ">
-  <div
-          className="w-[60%] bg-white/10 rounded-full h-1 relative"
-          onClick={(e) => {
-            if (!videoRef.current || !durations[videoIndex]) return
-            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
-            const clickX = e.clientX - rect.left
-            const percent = (clickX / rect.width) * 100
-            const newTime = (percent / 100) * durations[videoIndex]
-            videoRef.current.currentTime = newTime
-            setCurrentTime(newTime)
-          }}
-        > 
-
-          <div
-            className="bg-gradient-to-r from-blue-500 to-purple-500 h-1 rounded-full transition-all duration-200"
-            style={{
-              width: `${Math.min(progressPercent, 100)}%`,
-              willChange: "width"
-            }}
-          />
-          duration
-          {/* <div
-            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-md cursor-pointer"
-            style={{ left: `calc(${Math.min(progressPercent, 100)}% - 6px)` }}
-            draggable
-            onDrag={(e) => {
-              if (!durations[videoIndex] || !videoRef.current) return
-              const rect = (e.currentTarget.parentElement as HTMLDivElement).getBoundingClientRect()
-              const percent = ((e.clientX - rect.left) / rect.width) * 100
-              if (percent >= 0 && percent <= 100) {
-                const newTime = (percent / 100) * durations[videoIndex]
-                videoRef.current.currentTime = newTime
-                setCurrentTime(newTime)
-              }
-            }}
-          /> */}
-        </div>
-          <div className="text-white text-xs">
-            {formatTime(currentTime)} / {durations[videoIndex] ? formatTime(durations[videoIndex]) : "0:00"}
+          
+          <div className="flex items-center">
+            <p className="text-white text-sm font-medium">Transformation Videos</p>
           </div>
-
-          </div>
-          {/* Fullscreen */}
+          
           <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={handleFullscreen}
-            className="bg-white/20 hover:bg-white/30 rounded-full p-1.5 text-white transition-all"
-            style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}
+            onClick={() => setShowInfo(!showInfo)}
+            className="h-5 w-5 bg-gray-400 hover:bg-gray-500 rounded-full border border-gray-500 shadow-inner flex items-center justify-center text-white text-xs font-bold transition-all duration-200"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <Maximize size={16} />
+            <Info size={10} />
           </motion.button>
         </div>
-      </div>
 
-      {/* Video switch slider */}
-      <div className="w-1/2 mt-4">
-        <input
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          onChange={handleVideo}
-          className="w-full accent-blue-500 cursor-pointer"
-        />
-      </div>
+        {/* Video container with smooth transitions */}
+        <div className="h-[50vh] p-6 backdrop-blur-xl shadow-xl rounded-2xl w-full relative">
+          <div className="relative w-full h-full">
+            <motion.video
+              key={videoIndex}
+              ref={videoRef}
+              src={videos[videoIndex].src}
+              onLoadedMetadata={(e) => handleMetadata(e, videoIndex)}
+              className="w-full h-full object-cover rounded-xl"
+              playsInline
+              preload="auto"
+              muted={ismuted}
+              onPlay={() => setIsplay(true)}
+              onPause={() => setIsplay(false)}
+              animate={{
+                filter: isTransitioning ? "blur(20px)" : "blur(0px)",
+                scale: isTransitioning ? 1.05 : 1,
+                opacity: isTransitioning ? 0.7 : 1
+              }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            />
+            
+            {/* Smooth transition overlay */}
+            <AnimatePresence>
+              {isTransitioning && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 bg-black/20 backdrop-blur-lg rounded-xl flex items-center justify-center"
+                >
+                  <div className="bg-white/20 backdrop-blur-md rounded-full p-4">
+                    <div className="w-6 h-6 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Info Overlay */}
+            <AnimatePresence>
+              {showInfo && (
+                <motion.div
+                  initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                  animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
+                  exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center"
+                >
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="bg-white/90 backdrop-blur-xl rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-white/20"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-semibold text-gray-800">File Details</h3>
+                      <motion.button
+                        onClick={() => setShowInfo(false)}
+                        className="p-1 rounded-full hover:bg-gray-200 transition-colors"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <X size={18} className="text-gray-600" />
+                      </motion.button>
+                    </div>
 
-      {/* Fake Mac-style window buttons */}
-      <div className="absolute top-2 left-4 right-4 flex items-center justify-between z-50">
-        <div className="flex gap-2">
-          <button className="h-3.5 w-3.5 bg-red-500 rounded-full border border-red-700 shadow-inner" />
-          <button className="h-3.5 w-3.5 bg-yellow-400 rounded-full border border-yellow-500 shadow-inner" />
-          <button className="h-3.5 w-3.5 bg-green-500 rounded-full border border-green-700 shadow-inner" />
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <FileVideo size={20} className="text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-800">{videos[videoIndex].name}</p>
+                          <p className="text-sm text-gray-600">{videos[videoIndex].type}</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Monitor size={14} className="text-gray-600" />
+                            <span className="font-medium text-gray-700">Resolution</span>
+                          </div>
+                          <p className="text-gray-600">{videos[videoIndex].resolution}</p>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <HardDrive size={14} className="text-gray-600" />
+                            <span className="font-medium text-gray-700">Size</span>
+                          </div>
+                          <p className="text-gray-600">{videos[videoIndex].size}</p>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Clock size={14} className="text-gray-600" />
+                            <span className="font-medium text-gray-700">Duration</span>
+                          </div>
+                          <p className="text-gray-600">
+                            {durations[videoIndex] ? formatTime(durations[videoIndex]) : videos[videoIndex].duration}
+                          </p>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <FileVideo size={14} className="text-gray-600" />
+                            <span className="font-medium text-gray-700">Codec</span>
+                          </div>
+                          <p className="text-gray-600">{videos[videoIndex].codec}</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                        <p className="text-sm font-medium text-blue-800 mb-1">Current Status</p>
+                        <div className="text-xs text-blue-600 space-y-1">
+                          <p>Progress: {Math.round(progressPercent)}% ({formatTime(currentTime)})</p>
+                          <p>State: {isplay ? "Playing" : "Paused"} • Audio: {ismuted ? "Muted" : "On"}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-        <div className="flex items-center">
-          <p className="text-white text-sm">Transformation videos</p>
+
+        {/* Controls bar - following your structure */}
+        <div className="max-w-full w-[92%] flex flex-col px-3 py-2.5 bg-white/10 backdrop-blur-md mt-2 rounded-2xl">
+          <div className="w-full h-10 flex items-center justify-between">
+            <div className="flex items-center gap-2">   
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
+                onClick={handlePlay}
+                className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
+              >
+                {isplay ? <Pause size={16} /> : <Play size={16} />}
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
+                onClick={handleMute}
+                className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
+              >
+                {ismuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+              </motion.button>
+            </div>
+
+            <div className="w-full flex items-center justify-center">
+              <div className="hover:bg-white/30 backdrop-blur-sm p-3 rounded-full text-white transition-all duration-200 text-xs">
+                {formatTime(currentTime)} / {durations[videoIndex] ? formatTime(durations[videoIndex]) : currentTime}
+              </div>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              onClick={handleFullscreen}
+              className="bg-white/20 hover:bg-white/30 rounded-full p-3 text-white transition-all"
+            >
+              <Maximize size={16} />
+            </motion.button>
+          </div>
         </div>
-        <button className="h-5 w-5 bg-gray-400 rounded-full border border-green-700 shadow-inner flex items-center justify-center text-white text-xs font-bold">
-          i
-        </button>
-      </div>
-    </motion.div>
+
+        {/* Enhanced Video switch slider */}
+        <div className="w-1/2 mt-4">
+          <div className="relative">
+            <div className="text-center mb-3">
+              <span className="text-white/60 text-xs font-medium">Switch Videos</span>
+            </div>
+            
+            <div className="relative h-12 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm shadow-xl">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={sliderValue}
+                onChange={handleVideo}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              
+              <div className="absolute inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full">
+                <div 
+                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
+                  style={{ width: `${sliderValue}%` }}
+                />
+              </div>
+              
+              <motion.div
+                className="absolute top-0.5 h-10 w-10 bg-white rounded-full shadow-2xl flex items-center justify-center"
+                style={{ left: `calc(${sliderValue}% - 20px)` }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <div className="w-4 h-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full" />
+              </motion.div>
+              
+              <div className="absolute -bottom-6 left-2 text-white/60 text-xs">Brothers</div>
+              <div className="absolute -bottom-6 right-2 text-white/60 text-xs">Creative</div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
   )
 }
 

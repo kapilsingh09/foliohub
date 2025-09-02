@@ -84,7 +84,7 @@ const VideoSection = () => {
             </div>
 
             {/* Hover tooltip */}
-            {/* {isHovered && (
+            {isHovered && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -107,7 +107,7 @@ const VideoSection = () => {
           
                 </div>
               </motion.div>
-            )} */}
+            )}
           </motion.div>
 
           {/* Bottom content */}
