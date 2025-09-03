@@ -138,7 +138,9 @@ const VideoSlider = () => {
       <div className="flex items-center justify-center" style={{ height: "10vh" }}>
         <div className="flex flex-col justify-center items-center">
 
-        <h1 className="text-3xl flex  text-start font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-4 text-center">
+        <h1 className="text-3xl flex  text-start font-bold text-transparent  mb-2 bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
+                   bg-clip-text text-transparent 
+                   drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]">
           RightSection Component
         </h1>
         <p className="text-lg text-white text-center">
@@ -234,7 +236,7 @@ const VideoSlider = () => {
                   animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
                   exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                   transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center"
+                  className="absolute inset-0 bg-black/60 rounded-xl z-90 flex items-center justify-center"
                 >
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -319,7 +321,7 @@ const VideoSlider = () => {
         </div>
 
         {/* Controls bar - following your structure */}
-        <div className="w-[90%] max-w-4xl flex flex-col px-5 py-3 bg-white/10 backdrop-blur-md  rounded-2xl">
+        <div className="w-[90%] max-w-4xl flex flex-col px-5 py-3 bg-white/10 backdrop-blur-md  rounded-2xl ">
           <div className="w-full h-12 flex items-center justify-between">
             <div className="flex items-center gap-3">   
               <motion.button

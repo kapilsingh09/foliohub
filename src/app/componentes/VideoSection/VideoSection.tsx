@@ -1,10 +1,10 @@
 "use client"
-import RightSection from './RightSection'
+import RightSection from "./RightSection"
 import { motion } from "motion/react"
 import React, { useState } from "react"
 import Image from "next/image"
 
-const VideoSection = () => {
+const EditorShowcase = () => {
   const [isHovered, setIsHovered] = useState(false)
   const [coords, setCoords] = useState({ x: 0, y: 0 })
 
@@ -16,152 +16,121 @@ const VideoSection = () => {
   }
 
   return (
-    <div className=" bg-black  min-h-screen w-full text-white flex items-center justify-center flex-col gap-8 p-8 md:p-9">
-      <section className="flex flex-nowrap h-full w-full flex-1 items-center justify-between gap-8">
+    <div className="bg-black min-h-screen h-full w-full text-white flex flex-col items-center justify-center gap-12 px-6 py-12 md:px-12 relative">
+      {/* Portfolio Title */}
+      <motion.h1
+        className="text-3xl md:text-7xl font-semibold tracking-tight flex items-start justify-start 
+                   bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
+                   bg-clip-text text-transparent 
+                   drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Video Editing Portfolio
+      </motion.h1>
+
+      <section className="flex flex-col md:flex-row h-full w-full flex-1 items-center justify-between gap-12">
         {/* LEFT BOX */}
-        <div className="h-full w-[60%] flex flex-col justify-between gap-6 ">
-          {/* Top content */}
-          <motion.div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onMouseMove={handleMouseMove}
-            className="relative flex flex-col items-start  backdrop-blur-sm overflow-hidden group p-2 cursor-pointer"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            {/* Animated border gradient */}
-          
-            
-            <div className="relative z-10 w-full flex justify-start h-[30vh]  ">
-              <div className="relative overflow-hidden rounded-xl">
+        <div className="h-full w-full md:w-[60%] flex flex-col justify-between gap-12">
+          {/* Top content (Before Editing) */}
+          <motion.div className="relative flex flex-col items-start group p-3">
+            <div
+              className="relative z-10 w-full flex justify-start h-[30vh]"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onMouseMove={handleMouseMove}
+            >
+              <div className="relative overflow-hidden rounded-2xl">
                 <Image
                   src="/img/RINTARO TSUMUGI AND KAORUKO WAGURI(1).jpeg"
-                  alt="icon"
-                  width={350}
-                  height={350}
-                  className="object-cover rounded-xl transition-transform duration-500 group-hover:scale-110"
+                  alt="Before Editing"
+                  width={400}
+                  height={400}
+                  className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
                 />
-                
-                {/* Video tag for future implementation */}
-             
-              {/* Your browser does not support the video tag. */}
-              <div className="h-full w-full rounded-2xl ">
-              {/* <video
-              className="object-cover rounded-xl w-full h-full transition-transform duration-500 group-hover:scale-110 z-90"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              src="m4final (1).mp4"
-              >
-              </video> */}
-              </div>
-                
-                
-                {/* Play button overlay */}
-            
               </div>
             </div>
-            
-            <div className="relative z-10 mt-4 text-left w-2/3">
-              <motion.h2 
-                className="text-2xl font-bold comfortaa-medium bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+
+            <div className="relative z-10 mt-6 text-left w-2/3">
+              <motion.h2
+                className="text-3xl font-semibold font-sans text-white"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                Creative Editing
+                Before Editing
               </motion.h2>
-              <motion.p 
-                className="text-gray-300 text-base mt-2 leading-relaxed"
+              <motion.p
+                className="text-gray-300 text-lg mt-3 leading-relaxed font-light"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                Professional video editing with smooth transitions and creative effects that bring your vision to life.
+                Raw footage straight from the camera — unpolished, simple, and
+                waiting to be transformed into something cinematic.
               </motion.p>
             </div>
-
-            {/* Hover tooltip */}
-            {isHovered && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ ease: "easeOut", duration: 0.2 }}
-                className="absolute z-20 pointer-events-none"
-                style={{
-                  top: coords.y - 100,
-                  left: coords.x - 80,
-                }}
-              >
-                <div className=" backdrop-blur-lg rounded-2xl shadow-2xl">
-                  <Image
-                    src="/img/𝗆𝖺𝗍𝖼𝗁𝗂𝗇𝗀 ㅤㅤ𝗂𝖼𝗈𝗇𝗌  !! (2).jpeg"
-                    alt="hover-img"
-                    width={160}
-                    height={160}
-                    className="rounded-xl shadow-lg"
-                  />
-          
-                </div>
-              </motion.div>
-            )}
           </motion.div>
 
-          {/* Bottom content */}
-          <motion.div 
-            className="flex flex-col items-end"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="w-full flex justify-end">
-              <div className="relative overflow-hidden rounded-xl group">
+          {/* Bottom content (After Editing) */}
+          <motion.div className="flex flex-col items-end">
+            <div
+              className="w-full flex justify-end"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onMouseMove={handleMouseMove}
+            >
+              <div className="relative overflow-hidden rounded-2xl group">
                 <img
                   src="/img/RINTARO TSUMUGI AND KAORUKO WAGURI(2).jpeg"
-                  alt="icon"
-                  width={350}
-                  height={350}
-                  className="object-cover rounded-xl transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
+                  alt="After Editing"
+                  width={400}
+                  height={400}
+                  className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
                 />
-                
-                {/* Video tag for future implementation */}
-                {/* 
-                <video
-                  className="object-cover rounded-xl w-full h-full transition-all duration-500 group-hover:scale-105"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                >
-                  <source src="/videos/your-video-2.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                */}
-                
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </div>
-            <div className="mt-4 text-left w-[45%] p-1">
-              <h2 className="text-2xl font-bold comfortaa-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                Motion Graphics
-              </h2>
-              <p className="text-gray-300 text-base text-left mt-2 leading-relaxed">
-                Dynamic animations and motion graphics that captivate your audience with stunning visual storytelling.
+            <div className="pl-5 p-3 text-left w-[55%]">
+              <h2 className="text-3xl font-semibold text-white">After Editing</h2>
+              <p className="text-gray-300 text-lg mt-3 leading-relaxed font-light">
+                Enhanced with color grading, smooth transitions, and creative
+                effects that turn the raw clips into a professional visual story.
               </p>
             </div>
           </motion.div>
         </div>
 
         {/* RIGHT BOX */}
-<RightSection />
-
+        <RightSection />
       </section>
+
+      {/* Hover tooltip image */}
+      {/* {isHovered && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ ease: "easeOut", duration: 0.5 }}
+          className="absolute z-20 pointer-events-none"
+          style={{
+            top: coords.y + 150,
+            left: coords.x,
+          }}
+        >
+          <div className="backdrop-blur-md rounded-2xl">
+            <Image
+              src="/img/𝗆𝖺𝗍𝖼𝗁𝗂𝗇𝗀 ㅤㅤ𝗂𝖼𝗈𝗇𝗌  !! (2).jpeg"
+              alt="hover-preview"
+              width={160}
+              height={160}
+              className="rounded-xl"
+            />
+          </div>
+        </motion.div>
+      )} */}
     </div>
   )
 }
 
-export default VideoSection
+export default EditorShowcase
