@@ -3,6 +3,7 @@ import SixDivLayout from "./componentes/SixDivLayout";
 import ContactForm from "./componentes/ContactForm";
 import About from "./componentes/About/About";
 import VideoSection from "./componentes/VideoSection/VideoSection";
+import Griddd from './componentes/girddd'
 import { LinkPreviewDemo } from "./componentes/TextHover";
 export default function Home() {
   return (
@@ -11,14 +12,15 @@ export default function Home() {
       <SixDivLayout />
 
 
-      {/* <Griddd /> */}
 
-  {/* <About /> */}
-  {/* <LinkPreviewDemo /> */}
+  <About />
+  <LinkPreviewDemo />
 <VideoSection />
-{/* <LinkPreviewDemo /> */}
-      {/* <div className="flex gap-6"> */}
+{/* <LinkPreviewDemo /> */}/
 
+      {/* <div className="flex gap-6"> */}
+      <Griddd />
+<ContactForm />
       {/* </div> */}
     </main>
   );

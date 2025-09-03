@@ -16,23 +16,24 @@ const EditorShowcase = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen h-full w-full text-white flex flex-col items-center justify-center gap-12 px-6 py-12 md:px-12 relative">
-      {/* Portfolio Title */}
-      <motion.h1
-        className="text-3xl md:text-7xl font-semibold tracking-tight flex items-start justify-start 
-                   bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
-                   bg-clip-text text-transparent 
-                   drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        Video Editing Portfolio
-      </motion.h1>
-
-      <section className="flex flex-col md:flex-row h-full w-full flex-1 items-center justify-between gap-12">
+    <div className="bg-black min-h-screen h-full w-full text-white flex flex-col items-center justify-center gap-12 px-6 py-5 md:px-12 relative">
+      <section className="flex flex-col md:flex-row h-full w-full flex-1 items-center justify-between gap-8">
         {/* LEFT BOX */}
-        <div className="h-full w-full md:w-[60%] flex flex-col justify-between gap-12">
+        <div className="h-full w-full md:w-[60%] flex flex-col justify-between gap-8">
+          {/* Page Title on the left */}
+          <div className="flex items-start justify-start h-30  mb-4">
+            <motion.h1
+              className="text-3xl h-full md:text-7xl font-semibold tracking-tight flex 
+              bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
+              bg-clip-text text-transparent 
+              drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Video Editing Portfolio
+            </motion.h1>
+          </div>
           {/* Top content (Before Editing) */}
           <motion.div className="relative flex flex-col items-start group p-3">
             <div
