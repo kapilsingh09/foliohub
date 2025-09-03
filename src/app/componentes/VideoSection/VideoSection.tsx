@@ -1,12 +1,14 @@
 "use client"
 import RightSection from "./RightSection"
 import { motion } from "motion/react"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import Image from "next/image"
 
 const EditorShowcase = () => {
   const [isHovered, setIsHovered] = useState(false)
   const [coords, setCoords] = useState({ x: 0, y: 0 })
+
+  const containerRef = useRef<HTMLDivElement>(null) 
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -16,7 +18,9 @@ const EditorShowcase = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen h-full w-full text-white flex flex-col items-center justify-center gap-12 px-6 py-5 md:px-12 relative">
+    <div
+    ref={containerRef}
+    className="bg-black min-h-screen h-full w-full text-white flex flex-col items-center justify-center gap-12 px-6 py-5 md:px-12 relative">
       <section className="flex flex-col md:flex-row h-full w-full flex-1 items-center justify-between gap-8">
         {/* LEFT BOX */}
         <div className="h-full w-full md:w-[60%] flex flex-col justify-between gap-8">
@@ -103,7 +107,8 @@ const EditorShowcase = () => {
         </div>
 
         {/* RIGHT BOX */}
-        <RightSection />
+        <RightSection containerRef={containerRef as React.RefObject<HTMLDivElement>} />
+
       </section>
 
       {/* Hover tooltip image */}

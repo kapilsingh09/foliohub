@@ -54,7 +54,7 @@ const SixDivLayout = () => {
   return (
     <div className="min-h-screen w-full p-8">
       {/* ================= TOP SECTION ================= */}
-      <div className="flex gap-6 mb-6">
+      <div className="flex gap-10 mb-4">
         {/* ---------- LEFT HERO ---------- */}
         <div className="relative h-[100vh] w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden">
       <BackgroundLines>

@@ -4,7 +4,15 @@ import { useRef, useState, useEffect } from "react"
 import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
 import { useDragControls } from "motion/react"
 
-const VideoSlider = () => {
+import React from "react"
+
+interface VideoSliderProps {
+  containerRef: React.RefObject<HTMLDivElement>
+}
+
+const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
+
+  
   const [videoIndex, setVideoIndex] = useState(0)
   const [ismuted, setIsmuted] = useState(false)
   const [isplay, setIsplay] = useState(false)
@@ -40,7 +48,7 @@ const VideoSlider = () => {
       description: "Professionally edited version"
     }
   ]
-const containerRef = useRef(null)
+
   const controls = useDragControls()
 
   // Handle video selection with smooth transition
@@ -135,7 +143,7 @@ const containerRef = useRef(null)
     : 0
 
   return (
-    <div  ref={containerRef.current} className="min-h-screen h-full w-[45%]">
+    <div  className="min-h-screen h-full w-[45%] relative overflow-hidden">
       <div className="flex items-center justify-center" style={{ height: "10vh" }}>
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl flex text-start font-bold text-transparent mb-2 bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
@@ -150,9 +158,11 @@ const containerRef = useRef(null)
       </div>
 
       <motion.div
-      //  drag dragControls={controls} 
-      //  ref
-       
+        drag
+        dragControls={controls}
+        dragConstraints={containerRef}
+        dragElastic={0.1}
+        dragMomentum={false}
         className="h-full w-full border-white/30 border-2 z-[999px] relative flex flex-col items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}

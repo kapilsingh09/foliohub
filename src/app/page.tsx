@@ -4,7 +4,6 @@ import ContactForm from "./componentes/ContactForm";
 import About from "./componentes/About/About";
 import VideoSection from "./componentes/VideoSection/VideoSection";
 import Griddd from './componentes/girddd'
-import { LinkPreviewDemo } from "./componentes/TextHover";
 export default function Home() {
   return (
     <main className="bg-black/[0.96] min-h-screen antialiased bg-grid-white/[0.02]"  >
@@ -14,7 +13,6 @@ export default function Home() {
 
 
   <About />
-  <LinkPreviewDemo />
 <VideoSection />
 {/* <LinkPreviewDemo /> */}/
 
