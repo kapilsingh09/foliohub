@@ -140,7 +140,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     : 0
 
   return (
-    <div className="w-full relative items-center justify-center overflow-hidden px-0">
+    <div className="w-full relative items-center justify-center overflow-hidden px-0 ">
       {/* Right section heading */}
       <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
         <h2 className="text-xl md:text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
@@ -157,7 +157,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
         // dragConstraints={containerRef}
         // dragElastic={0.1}
         // dragMomentum={false}
-        className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
+        className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl "
        
         transition={{ duration: 0.3 }}
       >
@@ -191,7 +191,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <Info size={window.innerWidth >= 768 ? 10 : 8} />
+            <Info size={8} />
           </motion.button>
         </div>
 

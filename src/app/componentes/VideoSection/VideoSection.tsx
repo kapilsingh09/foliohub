@@ -35,7 +35,7 @@ const EditorShowcase = () => {
         {/* LEFT BOX */}
         <div className="w-full md:w-[60%] flex flex-col justify-between gap-8">
           {/* Top content (Before Editing) */}
-          <motion.div className="relative flex flex-col items-start group p-3">
+          <motion.div className="relative flex flex-col items-start group ">
             <div
               className="relative z-10 w-full flex justify-start h-[30vh]"
               onMouseEnter={() => setIsHovered(true)}
@@ -103,7 +103,7 @@ const EditorShowcase = () => {
         </div>
 
         {/* RIGHT BOX */}
-        <div className="w-full md:w-[40%]">
+        <div className="w-full md:w-[40%] xl:w-[50%]   sm:w-[60%]">
           <RightSection containerRef={containerRef as React.RefObject<HTMLDivElement>} />
         </div>
 

@@ -47,7 +47,7 @@ const Navbar = () => {
           border: "1px solid rgba(0,0,0,0.1)",
         }}
       >
-        <div className="max-w-9xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+        <div className="max-w-9xl mx-auto px-4 sm:px-9 py-3 flex justify-between  items-center ">
           {/* Logo */}
           <Link
             href="/"
@@ -60,7 +60,7 @@ const Navbar = () => {
 
           {/* Nav Links */}
           <div
-            className={`flex flex-wrap sm:flex-nowrap space-x-2 sm:space-x-4 md:space-x-8 text-white font-medium transition-all duration-300 ${
+            className={`flex flex-wrap sm:flex-nowrap items-center justify-center space-x-2 sm:space-x-4 md:space-x-8 text-white font-medium transition-all duration-300 ${
               scrolled
                 ? "text-xs sm:text-sm md:text-base"
                 : "text-sm sm:text-base md:text-lg"
