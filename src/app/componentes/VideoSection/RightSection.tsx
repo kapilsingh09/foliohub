@@ -140,20 +140,16 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     : 0
 
   return (
-    <div className="min-h-screen h-full w-full relative items-center justify-center overflow-hidden px-4 lg:px-0">
-      {/* Header - Responsive */}
-      <div className="flex items-center justify-center py-4 lg:py-8" style={{ minHeight: "10vh" }}>
-        <div className="flex flex-col justify-center items-center text-center">
-          <h1 className="text-2xl md:text-3xl lg:text-3xl font-bold text-transparent mb-2 bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 
-                     bg-clip-text 
-                     drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]">
-            Premium Video Player
-          </h1>
-          <p className="text-sm md:text-lg text-white text-center px-2">
-            Experience cinematic quality with seamless transitions and premium controls
-          </p>
-        </div>
+    <div className="w-full relative items-center justify-center overflow-hidden px-0">
+      {/* Right section heading */}
+      <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
+        <h2 className="text-xl md:text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
+          Premium Video Player
+        </h2>
+        
+        
       </div>
+      <p className="text-sm md:text-base text-white/80 mb-2 md:mb-3 px-2 md:px-0">Watch and compare different edits seamlessly.</p>
 
       <motion.div
         // drag={window.innerWidth >= 1024}
@@ -161,7 +157,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
         // dragConstraints={containerRef}
         // dragElastic={0.1}
         // dragMomentum={false}
-        className="h-auto w-[90%] border-white/30 border-2 z-[999px] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl "
+        className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
        
         transition={{ duration: 0.3 }}
       >
@@ -200,7 +196,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
         </div>
 
         {/* Video container with responsive height */}
-        <div className="h-[30vh] md:h-[40vh] lg:h-[50vh] w-full mt-8 md:mt-10 p-4 md:p-8 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
+        <div className="h-[28vh] md:h-[38vh] lg:h-[48vh] w-full mt-6 md:mt-8 p-4 md:p-6 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
           <div className="relative w-full h-full">
             <motion.video
               key={videoIndex}

@@ -91,7 +91,7 @@ const HeroSection = () => {
               I help brands and creators tell powerful stories through seamless video
               <motion.span
                 key={dynamicWords[index].word}
-                className={`ml-1.5 border-2 border-white/20 bg-white/30 py-1.5 px-4 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
+                className={`  py-1.5 px-2 rounded-xl font-normal text-base md:text-xl tracking-wide ${dynamicWords[index].color}`}
                 initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(6px)" }}
                 animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(6px)" }}
@@ -141,7 +141,7 @@ const HeroSection = () => {
       onClick={()=>{scrollDown()}}
       className="h-8 w-8 rounded-full border border-white/30 flex items-center justify-center hover:cursor-pointer hover:bg-white/10 transition-all duration-300 ease-in-out">
         <ArrowDown className="transition-transform duration-300 ease-in-out hover:translate-y-1" />
-      </button>
+      </button> 
     </div>
   </div>
 </div>

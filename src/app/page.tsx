@@ -14,7 +14,7 @@ export default function Home() {
 
   <About />
 <VideoSection />
-{/* <LinkPreviewDemo /> */}/
+{/* <LinkPreviewDemo /> */}
 
       {/* <div className="flex gap-6"> */}
       <Griddd />
