@@ -1,4 +1,4 @@
-import HeroSection from "@/app/componentes/HeroSection"
+import HomePage from "@/app/componentes/HomePage"
 import SixDivLayout from "./componentes/SixDivLayout";
 import ContactForm from "./componentes/ContactForm";
 import About from "./componentes/About/About";
@@ -7,7 +7,7 @@ import Griddd from './componentes/girddd'
 export default function Home() {
   return (
     <main className="bg-black/[0.96] min-h-screen antialiased bg-grid-white/[0.02]"  >
-      <HeroSection />
+      <HomePage />
       <SixDivLayout />
 
 

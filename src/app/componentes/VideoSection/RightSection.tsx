@@ -162,7 +162,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
         // dragElastic={0.1}
         // dragMomentum={false}
         className="h-auto w-[90%] border-white/30 border-2 z-[999px] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl "
-        whileHover={{ scale: window.innerWidth >= 1024 ? 1.02 : 1 }}
+       
         transition={{ duration: 0.3 }}
       >
         {/* Enhanced Mac-style window buttons - Responsive */}
