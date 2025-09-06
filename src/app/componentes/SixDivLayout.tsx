@@ -7,19 +7,40 @@ import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";
 import { BackgroundLines } from "./ui/background-lines";
 
+
+//img kit subscription ended  
+// const videos = [
+//   {
+//     src: "",
+//     title: "Cool Car Edits",
+//     description: "High-octane car edit with fast cuts and smooth transitions",
+//   },
+//   {
+//     src: "https://ik.imagekit.io/neko5amq/Videos/brothers%20(1).mp4?updatedAt=1757058072539",
+//     title: "Brotherhood Ride",
+//     description: "Two brothers, one passion – cinematic storytelling on wheels",
+//   },
+//   {
+//     src: "https://ik.imagekit.io/neko5amq/Videos/finalBMW.mp4?updatedAt=17570580737244",
+//     title: "BMW Showcase",
+//     description: "Luxury meets motion. Smooth transitions and cinematic vibes",
+//   },
+// ];
+
+
 const videos = [
   {
-    src: "",
+    src: "/m3.mp4",
     title: "Cool Car Edits",
     description: "High-octane car edit with fast cuts and smooth transitions",
   },
   {
-    src: "https://ik.imagekit.io/neko5amq/Videos/brothers%20(1).mp4?updatedAt=1757058072539",
+    src: "/brothers.mp4",
     title: "Brotherhood Ride",
     description: "Two brothers, one passion – cinematic storytelling on wheels",
   },
   {
-    src: "https://ik.imagekit.io/neko5amq/Videos/finalBMW.mp4?updatedAt=17570580737244",
+    src: "/finalBMW.mp4",
     title: "BMW Showcase",
     description: "Luxury meets motion. Smooth transitions and cinematic vibes",
   },
