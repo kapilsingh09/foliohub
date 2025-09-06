@@ -9,7 +9,7 @@ import { BackgroundLines } from "./ui/background-lines";
 
 const videos = [
   {
-    src: "https://ik.imagekit.io/neko5amq/Videos/m3.mp4?updatedAt=1757060117712",
+    src: "",
     title: "Cool Car Edits",
     description: "High-octane car edit with fast cuts and smooth transitions",
   },
