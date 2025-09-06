@@ -140,7 +140,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     : 0
 
   return (
-    <div className="w-full relative items-center justify-center overflow-hidden px-0 ">
+    <div className="w-full  relative items-center justify-center overflow-hidden px-0 ">
       {/* Right section heading */}
       <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
         <h2 className="text-xl md:text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
@@ -196,7 +196,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
         </div>
 
         {/* Video container with responsive height */}
-        <div className="h-[28vh] md:h-[38vh] lg:h-[48vh] w-full mt-6 md:mt-8 p-4 md:p-6 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
+        <div className="h-[40vh] md:h-[38vh] lg:h-[48vh] w-full mt-6 md:mt-8 p-4 md:p-6 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
           <div className="relative w-full h-full">
             <motion.video
               key={videoIndex}
