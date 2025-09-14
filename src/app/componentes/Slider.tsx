@@ -5,17 +5,17 @@ import { motion, useAnimationFrame } from "framer-motion";
 
 // These are the pre-defined gradients for the client initials
 const backgroundGradients = [
-  "bg-gradient-to-br from-indigo-500 to-purple-600",
-  "bg-gradient-to-br from-green-500 to-teal-600",
-  "bg-gradient-to-br from-orange-500 to-rose-600",
-  "bg-gradient-to-br from-cyan-500 to-blue-600",
-  "bg-gradient-to-br from-fuchsia-500 to-pink-600",
-  "bg-gradient-to-br from-lime-500 to-emerald-600",
+  "bg-gradient-to-br from-pink-500 via-red-400 to-yellow-300",
+  "bg-gradient-to-br from-sky-500 via-cyan-400 to-emerald-300",
+  "bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-400",
+  "bg-gradient-to-br from-orange-400 via-amber-500 to-lime-300",
+  "bg-gradient-to-br from-fuchsia-500 via-pink-400 to-rose-300",
+  "bg-gradient-to-br from-teal-500 via-green-400 to-lime-200",
+  "bg-gradient-to-br from-violet-500 via-purple-400 to-pink-300",
+  "bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500",
 ];
 
-// Function to get a unique gradient from a name
-// It creates a simple hash from the name to pick a consistent gradient
-const getGradientFromName = (name) => {
+const getGradientFromName = (name: string) => {
   let sum = 0;
   for (let i = 0; i < name.length; i++) {
     sum += name.charCodeAt(i);
@@ -85,11 +85,11 @@ export default function InfiniteSlider() {
   return (
     <div className="relative overflow-hidden py-20 px-4  text-white font-inter">
       {/* Subtle radial gradient background */}
-      {/* <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div> */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto ">
         <h2 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 text-center mb-4 leading-tight tracking-tighter">
-          What Clients Say About Me
+          What <span className="underline underline-offset-1 decoration-green-400 decoration-3   leading-relaxed tracking-wide">Clients</span> Say About Me
         </h2>
         <p className="text-gray-400 text-center mb-16 text-lg max-w-3xl mx-auto">
           Real feedback from satisfied customers who love the quality and professionalism of our work.

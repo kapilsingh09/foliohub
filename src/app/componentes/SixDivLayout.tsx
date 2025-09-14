@@ -180,8 +180,8 @@ const SixDivLayout = () => {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <video
-              src={videos[0].src}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              src='./ye leh2.mp4'
+              className="w-full h-full object-cover  transition-transform duration-500 group-hover:scale-105"
               loop
               autoPlay
               muted

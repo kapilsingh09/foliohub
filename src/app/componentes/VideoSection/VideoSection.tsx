@@ -19,16 +19,17 @@ const EditorShowcase = () => {
 
   return (
     <div
-    ref={containerRef}
-    className="bg-black w-full text-white flex flex-col gap-8 px-6 py-8 md:px-12 relative">
+      ref={containerRef}
+      className="bg-black w-full text-white flex flex-col gap-8 px-6 py-8 md:px-12 relative"
+    >
       {/* Independent Page Title */}
       <motion.h1
-        className="text-3xl md:text-7xl font-semibold tracking-tight bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(168,85,247,0.8)]"
+        className="text-3xl md:text-7xl font-semibold tracking-tight bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(168,85,247,0.8)] mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Video Editing Portfolio
+        Video Comparison Showcase
       </motion.h1>
 
       <section className="container mx-auto flex flex-col md:flex-row w-full items-start justify-between gap-8">
@@ -49,6 +50,7 @@ const EditorShowcase = () => {
                   width={400}
                   height={400}
                   className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  priority
                 />
               </div>
             </div>
@@ -83,16 +85,17 @@ const EditorShowcase = () => {
               onMouseMove={handleMouseMove}
             >
               <div className="relative overflow-hidden rounded-2xl group">
-                <img
+                <Image
                   src="/img/RINTARO TSUMUGI AND KAORUKO WAGURI(2).jpeg"
                   alt="After Editing"
                   width={400}
                   height={400}
                   className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  priority
                 />
               </div>
             </div>
-            <div className="pl-5 p-3 text-left w-[55%]">
+            <div className="pl-5 p-3 text-left w-[62%] ">
               <h2 className="text-3xl font-semibold text-white">After Editing</h2>
               <p className="text-gray-300 text-lg mt-3 leading-relaxed font-light">
                 Enhanced with color grading, smooth transitions, and creative
@@ -106,7 +109,6 @@ const EditorShowcase = () => {
         <div className="w-full md:w-[40%] xl:w-[50%]   sm:w-[60%]">
           <RightSection containerRef={containerRef as React.RefObject<HTMLDivElement>} />
         </div>
-
       </section>
 
       {/* Hover tooltip image */}

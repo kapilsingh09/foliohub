@@ -143,10 +143,9 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     <div className="w-full  relative items-center justify-center overflow-hidden px-0 ">
       {/* Right section heading */}
       <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
-        <h2 className="text-xl md:text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
-          Premium Video Player
+        <h2 className="sm:text-lg md:text-2xl font-sans font-bold font-poppins text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] tracking-tight ">
+          Edit <span className="underline underline-offset-2 decoration-pink-400 decoration-2">Showdown</span>: Side-by-Side
         </h2>
-        
         
       </div>
       <p className="text-sm md:text-base text-white/80 mb-2 md:mb-3 px-2 md:px-0">Watch and compare different edits seamlessly.</p>
