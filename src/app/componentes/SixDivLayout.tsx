@@ -11,7 +11,7 @@ import { BackgroundLines } from "./ui/background-lines";
 //img kit subscription ended  
 // const videos = [
 //   {
-//     src: "",
+//     src: "/m3.mp4",
 //     title: "Cool Car Edits",
 //     description: "High-octane car edit with fast cuts and smooth transitions",
 //   },

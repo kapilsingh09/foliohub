@@ -19,7 +19,7 @@ export default function Home() {
 {/* <LinkPreviewDemo /> */}
 
       {/* <div className="flex gap-6"> */}
-      <Griddd />
+      {/* <Griddd /> */}
 <ContactForm />
       {/* </div> */}
     </main>
