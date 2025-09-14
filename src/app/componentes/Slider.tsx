@@ -26,40 +26,34 @@ const getGradientFromName = (name) => {
 
 const clients = [
   {
-    img: "https://images.unsplash.com/photo-1603415526960-f0b59f59b6f8?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Ava Martinez",
     comment:
-      "Amazing work on my wedding photos! The color grading was perfect and made every moment look magical. Professional service with quick turnaround time. Highly recommended!",
+      "Absolutely blown away by the video edit for my wedding! The transitions, color grading, and music sync made our special day feel like a movie. Super professional and delivered ahead of schedule. Highly recommend for any event video!",
   },
   {
-    img: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Liam Chen",
     comment:
-      "Outstanding editing for my business headshots! They enhanced the lighting perfectly and made me look professional. The quality exceeded my expectations completely.",
+      "The promo video for my business was next-level. The editing style was modern, with smooth cuts and dynamic effects that made my brand stand out. Communication was great and revisions were handled quickly. Will be back for more projects!",
   },
   {
-    img: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Sofia Patel",
     comment:
-      "Best photo editor I've worked with! My product photos look stunning now and my sales have increased. Fast delivery and excellent communication throughout.",
+      "I needed a cinematic travel vlog and got exactly that! The editor brought my footage to life with creative pacing, beautiful color work, and perfect music choices. My YouTube audience loved it. Best video editing experience I've had.",
   },
   {
-    img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Noah Kim",
     comment:
-      "Incredible editing on my travel photos! They brought out colors I didn't even know were there. Made my memories look like magazine covers. Will use again!",
+      "Incredible job on my short film edit. The storytelling through visuals and sound design was spot on. Every scene flowed perfectly and the attention to detail was impressive. Professional, creative, and reliable video editor.",
   },
   {
-    img: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Mia Johnson",
     comment:
-      "Perfect for my social media content! My Instagram engagement doubled after using these edited photos. Great style and understands what works online.",
+      "Social media reels and TikToks have never looked better! The edits were trendy, engaging, and helped boost my views and followers. Fast turnaround and always open to feedback. Highly skilled in video content for online platforms.",
   },
   {
-    img: "https://images.unsplash.com/photo-1573495612937-1e580eb56b72?auto=format&fit=facearea&w=300&h=300&facepad=2",
     name: "Ethan Smith",
     comment:
-      "Excellent work on my real estate photos! Properties look amazing and professional. Helped sell my listings faster than ever. Top quality service!",
+      "Real estate walkthrough videos were edited to perfection. The pacing, color correction, and added graphics made my listings stand out and attract more buyers. Great communication and top-notch quality every time.",
   },
 ];
 
@@ -68,14 +62,13 @@ export default function InfiniteSlider() {
   const x = useRef(0);
   const rerender = useState(0)[1];
 
-  const cardWidth = 336; // w-80 (320px) + mx-2 (16px) = 336px
+  const cardWidth = 336;
   const totalCards = clients.length;
   const totalWidth = cardWidth * totalCards;
 
   // Create multiple sets for a seamless loop
   const cardSets = Array(4).fill(clients).flat();
 
-  // Handler to pause/resume on card hover
   const handleCardMouseEnter = () => setIsPaused(true);
   const handleCardMouseLeave = () => setIsPaused(false);
 
@@ -90,9 +83,9 @@ export default function InfiniteSlider() {
   });
 
   return (
-    <div className="relative overflow-hidden py-20 px-4 bg-gray-950 text-white font-inter">
+    <div className="relative overflow-hidden py-20 px-4  text-white font-inter">
       {/* Subtle radial gradient background */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div>
+      {/* <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div> */}
 
       <div className="relative z-10 max-w-7xl mx-auto ">
         <h2 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 text-center mb-4 leading-tight tracking-tighter">
@@ -102,14 +95,14 @@ export default function InfiniteSlider() {
           Real feedback from satisfied customers who love the quality and professionalism of our work.
         </p>
 
-        <div className="relative w-full flex justify-center items-center">
+        <div className="relative w-full flex justify-center  items-center">
           {/* Fading gradient overlays */}
-          <div className="absolute left-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-r from-gray-950 via-gray-950 to-transparent"></div>
-          <div className="absolute right-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-l from-gray-950 via-gray-950 to-transparent"></div>
+          <div className="absolute left-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-l from-transparent via-black"></div>
+          <div className="absolute right-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-l from-transparent via-black "></div>
 
-          <div className="w-[85%] mx-auto  h-[43vh] flex items-center justify-center overflow-hidden">
+          <div className="w-[85%] mx-auto h-[43vh] flex items-center justify-center overflow-hidden">
             <motion.div
-              className="flex transition-none will-change-transform items-center justify-center"
+              className="flex transition-none will-change-transform items-center justify-center gap-8"
               style={{
                 x: x.current,
               }}
@@ -117,7 +110,7 @@ export default function InfiniteSlider() {
               {cardSets.map((client, idx) => (
                 <motion.div
                   key={idx}
-                  className="inline-block relative z-10 p-6 mx-2 w-80 min-h-[16rem] flex-shrink-0
+                  className="inline-block relative z-10 p-6 w-80 min-h-[16rem] flex-shrink-0
                     rounded-3xl border border-gray-700
                     bg-gradient-to-br from-zinc-800 to-zinc-900
                   "
