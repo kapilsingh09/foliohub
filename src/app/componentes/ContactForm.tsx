@@ -11,7 +11,7 @@ const ContactForm = () => {
   const [status, setStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleForm  = async (e) => {
+  const handleForm  = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
 
     try {

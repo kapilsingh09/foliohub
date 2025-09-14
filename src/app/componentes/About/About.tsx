@@ -66,7 +66,7 @@ const About = () => {
             </div>
             
             <p className="text-white text-base sm:text-lg leading-relaxed mb-6 max-w-2xl mx-auto lg:mx-0">
-              I'm a passionate <span className="text-pink-400 font-semibold">Video Editor & Storyteller</span>
+              I&apos;m a passionate <span className="text-pink-400 font-semibold">Video Editor & Storyteller</span>
               {' '}who turns raw footage into captivating stories.
               With expertise in <span className="text-pink-400 font-semibold">cinematic editing, color grading, and motion graphics</span>,
               I craft videos that not only look stunning but also connect deeply with audiences.

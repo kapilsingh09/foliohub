@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { UserPlus, Play } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";
 import { BackgroundLines } from "./ui/background-lines";
@@ -33,16 +34,19 @@ const videos = [
     src: "/m3.mp4",
     title: "Cool Car Edits",
     description: "High-octane car edit with fast cuts and smooth transitions",
+    views: 0,
   },
   {
     src: "/brothers.mp4",
     title: "Brotherhood Ride",
     description: "Two brothers, one passion – cinematic storytelling on wheels",
+    views: 0,
   },
   {
     src: "/finalBMW.mp4",
     title: "BMW Showcase",
     description: "Luxury meets motion. Smooth transitions and cinematic vibes",
+    views: 0,
   },
 ];
 
@@ -120,9 +124,11 @@ const SixDivLayout = () => {
                     transition={{ type: "spring", stiffness: 300 }}
                     className="bg-white/10 backdrop-blur-sm border border-white/30 rounded-xl p-2 shadow-md flex items-center justify-center hover:shadow-pink-500/30 hover:border-pink-400/50"
                   >
-                    <img
+                    <Image
                       src={item.src}
                       alt={item.label}
+                      width={24}
+                      height={24}
                       className="inline-block w-6 h-6 object-contain"
                     />
                   </motion.div>
