@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useAnimationFrame } from "framer-motion";
+import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
 
 // These are the pre-defined gradients for the client initials
 const backgroundGradients = [
@@ -57,21 +57,38 @@ const clients = [
   },
 ];
 
+const cardWidth = 336;
+const totalCards = clients.length;
+const totalWidth = cardWidth * totalCards;
+
+// Create multiple sets for a seamless loop
+const cardSets = Array(4).fill(clients).flat();
+
+const cardVariants = {
+  initial: { opacity: 0, y: 40, scale: 0.95 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  exit: { opacity: 0, y: -40, scale: 0.95, transition: { duration: 0.3, ease: "easeIn" } },
+};
+
 export default function InfiniteSlider() {
   const [isPaused, setIsPaused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const x = useRef(0);
   const rerender = useState(0)[1];
 
-  const cardWidth = 336;
-  const totalCards = clients.length;
-  const totalWidth = cardWidth * totalCards;
+  // For manual sliding
+  const handlePrev = () => {
+    setIsPaused(true);
+    setActiveIndex((prev) => (prev - 1 + clients.length) % clients.length);
+    setTimeout(() => setIsPaused(false), 1200);
+  };
+  const handleNext = () => {
+    setIsPaused(true);
+    setActiveIndex((prev) => (prev + 1) % clients.length);
+    setTimeout(() => setIsPaused(false), 1200);
+  };
 
-  // Create multiple sets for a seamless loop
-  const cardSets = Array(4).fill(clients).flat();
-
-  const handleCardMouseEnter = () => setIsPaused(true);
-  const handleCardMouseLeave = () => setIsPaused(false);
-
+  // For infinite auto sliding
   useAnimationFrame((t, delta) => {
     if (!isPaused) {
       x.current -= (30 * delta) / 1000; // Slower speed for better readability
@@ -82,8 +99,13 @@ export default function InfiniteSlider() {
     }
   });
 
+  // For mobile/small screens, show one card at a time with framer-motion slide
+  // For desktop, show the infinite slider as before
+  // We'll use a media query to determine which to show
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
-    <div className="relative overflow-hidden py-20 px-4  text-white font-inter">
+    <div className="relative overflow-hidden py-20 px-4 text-white font-inter">
       {/* Subtle radial gradient background */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div>
 
@@ -95,14 +117,72 @@ export default function InfiniteSlider() {
           Real feedback from satisfied customers who love the quality and professionalism of our work.
         </p>
 
-        <div className="relative w-full flex justify-center  items-center">
+        <div className="relative w-full flex justify-center items-center">
           {/* Fading gradient overlays */}
           <div className="absolute left-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-l from-transparent via-black"></div>
           <div className="absolute right-0 top-0 w-[15%] h-full z-10 pointer-events-none bg-gradient-to-l from-transparent via-black "></div>
 
+          {/* Responsive: show slider or single card with framer-motion slide */}
           <div className="w-[85%] mx-auto h-[43vh] flex items-center justify-center overflow-hidden">
+            {/* Mobile/Tablet: Animate single card with slide */}
+            <div className="block md:hidden w-full h-full flex items-center justify-center relative">
+              <button
+                aria-label="Previous"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 rounded-full p-2"
+                onClick={handlePrev}
+              >
+                <svg width="24" height="24" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button
+                aria-label="Next"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 rounded-full p-2"
+                onClick={handleNext}
+              >
+                <svg width="24" height="24" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <div className="w-full flex items-center justify-center">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={activeIndex}
+                    className="inline-block relative z-10 p-6 w-80 min-h-[16rem] flex-shrink-0
+                      rounded-3xl border border-gray-700
+                      bg-gradient-to-br from-zinc-800 to-zinc-900
+                    "
+                    variants={cardVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  >
+                    <div className="flex items-center space-x-4 mb-5">
+                      {/* Client Initials with dynamic gradient background */}
+                      <div className={`h-14 w-14 rounded-full flex items-center justify-center shadow-lg ${getGradientFromName(clients[activeIndex].name)}`}>
+                        <h2 className="text-white font-bold text-xl tracking-wide select-none">
+                          {clients[activeIndex].name.split(' ').map((n: string) => n[0]).join('')}
+                        </h2>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold text-lg flex items-center gap-2">
+                          {clients[activeIndex].name}
+                          <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        </h3>
+                        <span className="text-gray-400 text-sm">Satisfied Client</span>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed text-sm">
+                      {clients[activeIndex].comment}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+            {/* Desktop: Infinite framer-motion sliding */}
             <motion.div
-              className="flex transition-none will-change-transform items-center justify-center gap-8"
+              className="hidden md:flex transition-none will-change-transform items-center justify-center gap-8"
               style={{
                 x: x.current,
               }}
@@ -114,13 +194,16 @@ export default function InfiniteSlider() {
                     rounded-3xl border border-gray-700
                     bg-gradient-to-br from-zinc-800 to-zinc-900
                   "
-                  onMouseEnter={handleCardMouseEnter}
-                  onMouseLeave={handleCardMouseLeave}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
                   whileHover={{
                     scale: 1.03,
                     boxShadow: "0 20px 40px -15px rgba(102,51,153,0.3)",
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -40, scale: 0.95 }}
                 >
                   <div className="flex items-center space-x-4 mb-5">
                     {/* Client Initials with dynamic gradient background */}

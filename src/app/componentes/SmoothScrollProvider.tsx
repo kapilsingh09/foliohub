@@ -9,19 +9,32 @@ interface SmoothScrollProviderProps {
 
 export default function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(4, -10 * t)),
+      duration: 0.9,
+      // Smooth, less floaty easing. Linear if reduced motion.
+      easing: (t: number) => (prefersReduced ? t : 1 - Math.pow(1 - t, 1.8)),
+      // Improve responsiveness
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.0,
+      smoothWheel: !prefersReduced,
+      // Dampen overshoot wobble
+      lerp: 0.1,
     });
 
-    function raf(time: number) {
+    let rafId = 0;
+    const raf = (time: number) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+      rafId = requestAnimationFrame(raf);
+    };
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   return <>{children}</>;
