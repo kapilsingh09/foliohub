@@ -266,7 +266,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
             <video
               ref={videoRef}
               src={video.src}
-              className="w-full h-full object-cover rounded-l-2xl"
+              className="w-full h-full  rounded-l-2xl"
               preload="auto"
               playsInline
               webkit-playsinline="true"

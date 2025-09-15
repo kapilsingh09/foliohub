@@ -21,7 +21,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
 
   const videos = [
     {
-      src: "/brothers.mp4",
+      src: "/videos/Oldone.mp4",
       name: "Original Video",
       type: "MP4 Video",
       size: "156.2 MB",
@@ -33,7 +33,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
       description: "Original unedited footage"
     },
     {
-      src: "/cc1 (1).mp4", 
+      src: "/videos/Realone.mp4", 
       name: "Edited Video",
       type: "MP4 Video",
       size: "89.7 MB",
@@ -202,7 +202,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
               ref={videoRef}
               src={videos[videoIndex].src}
               onLoadedMetadata={(e) => handleMetadata(e, videoIndex)}
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-contain rounded-xl"
               playsInline
               preload="auto"
               muted={ismuted}

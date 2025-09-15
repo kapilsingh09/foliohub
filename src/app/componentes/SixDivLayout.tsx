@@ -29,7 +29,7 @@ import { BackgroundLines } from "./ui/background-lines";
 
 const videos = [
   {
-    src: "/m3.mp4",
+    src: "videos/OrigionalVideo.mp4",
     title: "Cool Car Edits",
     description: "High-octane car edit with fast cuts and smooth transitions",
     views: 0,
@@ -268,7 +268,7 @@ const SixDivLayout = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <motion.video
-              src={videos[0].src}
+              src='/videos/OverlayThumb.mp4'
               className="w-full h-full object-cover  transition-transform duration-500 group-hover:scale-105"
               loop
               autoPlay
