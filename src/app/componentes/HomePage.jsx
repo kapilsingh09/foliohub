@@ -118,7 +118,7 @@ const HeroSection = () => {
       className="flex text-white font-medium hover:underline cursor-pointer transition-all duration-300 ease-in-out"
     >
       Discover my latest edits
-      <ArrowUpRight className=" transition-transform duration-300 ease-in-out hover:translate-x-1" />
+      <ArrowDown className="ml-1 h-6 w-4 transition-transform duration-300 ease-in-out hover:translate-x-1" />
     </Link>
 
     {/* Second Link */}
