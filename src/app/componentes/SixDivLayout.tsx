@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { UserPlus, Play } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";
 import { BackgroundLines } from "./ui/background-lines";
-
 
 //img kit subscription ended  
 // const videos = [
@@ -27,7 +26,6 @@ import { BackgroundLines } from "./ui/background-lines";
 //     description: "Luxury meets motion. Smooth transitions and cinematic vibes",
 //   },
 // ];
-
 
 const videos = [
   {
@@ -68,6 +66,9 @@ const SixDivLayout = () => {
   const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
   const [index, setIndex] = useState(0);
 
+  const scrollRef = useRef(null);
+  const isInView = useInView(scrollRef, { once: true });
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % texts.length);
@@ -80,7 +81,13 @@ const SixDivLayout = () => {
       {/* ================= TOP SECTION ================= */}
       <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4">
         {/* ---------- LEFT HERO ---------- */}
-        <div className="relative h-[60vh] md:h-[100vh] w-full md:w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden">
+        <motion.div
+          ref={scrollRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative h-[60vh]  md:h-[100vh] w-full md:w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden"
+        >
           <BackgroundLines>
             {/* Center Text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
@@ -165,7 +172,7 @@ const SixDivLayout = () => {
               </motion.span>
             </motion.div>
           </BackgroundLines>
-        </div>
+        </motion.div>
 
         {/* ---------- RIGHT SIDE ---------- */}
         <div className="w-full md:w-1/2 flex flex-col gap-4">

@@ -209,7 +209,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
 
   const editingSoftware = [
     { name: "After Effects", icon: Zap },
-    { name: "Premiere Pro", icon: Scissors },
+    // { name: "Premiere Pro", icon: Scissors },
     { name: "DaVinci Resolve", icon: Palette }
   ];
 
@@ -227,7 +227,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
     >
       {/* Optimized backdrop blur */}
       <div 
-        className="absolute inset-0"
+        className="absolute sm:overflow-y-hidden inset-0"
         style={{
           backdropFilter: isPlaying ? "blur(12px)" : "blur(6px)",
           transition: "backdrop-filter 0.3s ease",
@@ -240,7 +240,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ type: "spring", duration: 0.4 }}
-        className="relative w-full max-w-4xl max-h-[85vh] bg-gradient-to-br from-neutral-900/95 to-neutral-800/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+        className="relative w-full max-w-4xl sm:overflow-y-hidden max-h-[85vh] bg-gradient-to-br from-neutral-900/95 to-neutral-800/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10"
       >
         {/* Close Button */}
         <AnimatePresence>
@@ -355,7 +355,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
           </div>
 
           {/* Right Panel - Video Details */}
-          <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl overflow-y-auto">
+          <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl overflow-y-hidden">
             {/* Title and Description */}
             <div className="space-y-3 mt-3">
               <h2 className="text-xl font-bold text-white leading-tight">
@@ -367,9 +367,9 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
             </div>
 
             {/* View Count */}
-            <div className="flex items-center gap-2 text-neutral-400 text-sm">
+            {/* <div className="flex items-center gap-2 text-neutral-400 text-sm">
               <span>Music Used:</span>
-            </div>
+            </div> */}
 
             {/* Editing Software Used */}
             <div className="space-y-3">
