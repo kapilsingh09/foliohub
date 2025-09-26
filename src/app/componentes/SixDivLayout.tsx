@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { UserPlus, Play } from "lucide-react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import type { Variants } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "motion/react";
+import type { Variants } from "motion/react";
 import Image from "next/image";
 import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Instagram, Twitter, Github } from 'lucide-react'
-import { a } from 'motion/react-client'
+import { motion } from 'motion/react'
 
 const socials = [
   { name: 'Instagram', href: 'https://instagram.com', icon: <Instagram /> },

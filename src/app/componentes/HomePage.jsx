@@ -31,10 +31,12 @@ const dynamicWords = [
 ];
 
 const scrollDown =() =>{
-  window.scrollTo({
-    top: window.innerHeight,
-    behavior: "smooth"
-  });
+  if (typeof window !== 'undefined') {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth"
+    });
+  }
 }
 const HeroSection = () => {
   const [index, setIndex] = useState(0);

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, useAnimationFrame, AnimatePresence } from "motion/react";
 
 // These are the pre-defined gradients for the client initials
 const backgroundGradients = [
@@ -102,6 +102,19 @@ export default function InfiniteSlider() {
   // For mobile/small screens, show one card at a time with framer-motion slide
   // For desktop, show the infinite slider as before
   // We'll use a media query to determine which to show
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
 
   return (
     <div className="relative overflow-hidden py-20 px-4 text-white font-inter">

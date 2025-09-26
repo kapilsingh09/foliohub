@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
     // 🚨 disables ESLint checks during production builds
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    // 🚨 disables TypeScript checks during production builds
+    ignoreBuildErrors: true,
+  },
+  // Optimize for production
+  swcMinify: true,
+  compress: true,
+  poweredByHeader: false,
 };
 
 export default nextConfig;

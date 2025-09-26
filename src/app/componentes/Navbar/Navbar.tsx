@@ -6,20 +6,26 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   const scrollContact = () => {
-    window.scrollTo({
-      top: document.body.scrollHeight - 860,
-      behavior: "smooth",
-    });
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      window.scrollTo({
+        top: document.body.scrollHeight - 860,
+        behavior: "smooth",
+      });
+    }
   };
 
   const scrollAbout = () => {
-    window.scrollTo({
-      top: window.innerHeight * 2.5,
-      behavior: "smooth",
-    });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: window.innerHeight * 2.5,
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setScrolled(true);

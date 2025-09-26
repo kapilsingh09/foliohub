@@ -1,6 +1,7 @@
 import React from 'react'
+import Image from 'next/image'
 import { SparklesCore } from '../ui/sparkles'
-import { Video, Edit, Palette, Play, Award, Calendar, User } from 'lucide-react'
+import { Video, Edit, Palette, Play, Award, Calendar } from 'lucide-react'
 
 const skills = [
   { name: "Adobe Premiere Pro", icon: Video },
@@ -46,10 +47,13 @@ const About = () => {
           {/* Left - Image / Reel */}
           <div className="w-full lg:w-1/2 flex items-center justify-center">
             <div className="h-64 w-64 sm:h-80 sm:w-80 lg:h-[45vh] lg:w-[45vh] rounded-full overflow-hidden shadow-2xl border-4 border-pink-400/20">
-              <img
+              <Image
                 src="/kaoruko pfp __.jpeg"
                 alt="about-img"
                 className="rounded-full h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+                width={400}
+                height={400}
+                priority
               />
             </div>
           </div>

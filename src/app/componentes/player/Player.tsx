@@ -2,7 +2,18 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, Share2, Eye, Play, Pause, Volume2, VolumeX, Settings, Monitor, Scissors, Palette, Zap } from "lucide-react";
+import {
+  X,
+  Heart,
+  Share2,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Monitor,
+  Palette,
+  Zap,
+} from "lucide-react";
 
 interface VideoData {
   src: string;
@@ -26,14 +37,11 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [volume, setVolume] = useState(1);
+
   const videoRef = useRef<HTMLVideoElement>(null);
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>();
-  const lastTimeUpdateRef = useRef<number>(0);
+  const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-
-  // Optimized controls auto-hide with debouncing
+  // Hide controls after 3 seconds if playing
   const hideControlsWithDelay = useCallback(() => {
     if (controlsTimeoutRef.current) {
       clearTimeout(controlsTimeoutRef.current);
@@ -45,13 +53,13 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
     }
   }, [isPlaying]);
 
-  // Show controls with debouncing
+  // Show controls and reset hide timer
   const showControlsHandler = useCallback(() => {
     setShowControls(true);
     hideControlsWithDelay();
   }, [hideControlsWithDelay]);
 
-  // Throttled mouse move handler to prevent excessive re-renders
+  // Mouse move shows controls
   const handleVideoMouseMove = useCallback(() => {
     showControlsHandler();
   }, [showControlsHandler]);
@@ -66,7 +74,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
         clearTimeout(controlsTimeoutRef.current);
       }
     }
-
     return () => {
       if (controlsTimeoutRef.current) {
         clearTimeout(controlsTimeoutRef.current);
@@ -77,12 +84,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
   // Auto-play on video load
   useEffect(() => {
     if (videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn("Autoplay failed:", err);
-        });
-      }
+      videoRef.current.play().catch(() => {});
     }
   }, [video]);
 
@@ -92,14 +94,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch((err) => {
-            console.warn("Play interrupted:", err);
-          });
-      }
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
   }, [isPlaying]);
 
@@ -112,7 +107,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
   }, [isMuted]);
 
   const toggleFullscreen = useCallback(() => {
-    if (videoRef.current) {
+    if (videoRef.current && typeof document !== "undefined") {
       if (document.fullscreenElement) {
         document.exitFullscreen();
       } else {
@@ -121,75 +116,40 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
     }
   }, []);
 
-  // Format time function
-  const formatTime = useCallback((seconds: number) => {
+  const formatTime = (seconds: number) => {
     if (!isFinite(seconds) || isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  }, []);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
-  // Optimized video event handlers
-  const handleLoadedMetadata = useCallback(() => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Ultra-fast throttled time update to prevent lag
-  const handleTimeUpdate = useCallback(() => {
-    if (videoRef.current) {
-      const currentTime = videoRef.current.currentTime;
-      const now = performance.now();
-      
-      // Throttle updates to every 200ms for smoother performance
-      if (now - lastTimeUpdateRef.current > 200) {
-        setCurrentTime(currentTime);
-        lastTimeUpdateRef.current = now;
-      }
-    }
-  }, []);
-
-  const handleLoadStart = useCallback(() => {
-    setIsLoading(true);
-  }, []);
-
-  const handleCanPlay = useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
-  const handleWaiting = useCallback(() => {
-    setIsLoading(true);
-  }, []);
-
-  const handlePlaying = useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
-  // Optimized video event listeners with minimal re-renders
+  // Video event handlers
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Simple event handlers that only update necessary state
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
-    const handleError = (e: Event) => {
-      console.error("Video error:", e);
+    const handleLoadedMetadata = () => {
+      setDuration(video.duration);
       setIsLoading(false);
     };
+    const handleTimeUpdate = () => {
+      setCurrentTime(video.currentTime);
+    };
+    const handleLoadStart = () => setIsLoading(true);
+    const handleCanPlay = () => setIsLoading(false);
+    const handleWaiting = () => setIsLoading(true);
+    const handlePlaying = () => setIsLoading(false);
 
-    // Add event listeners
-    video.addEventListener("play", handlePlay, { passive: true });
-    video.addEventListener("pause", handlePause, { passive: true });
-    video.addEventListener("loadedmetadata", handleLoadedMetadata, { passive: true });
-    video.addEventListener("timeupdate", handleTimeUpdate, { passive: true });
-    video.addEventListener("loadstart", handleLoadStart, { passive: true });
-    video.addEventListener("canplay", handleCanPlay, { passive: true });
-    video.addEventListener("waiting", handleWaiting, { passive: true });
-    video.addEventListener("playing", handlePlaying, { passive: true });
-    video.addEventListener("error", handleError, { passive: true });
+    video.addEventListener("play", handlePlay);
+    video.addEventListener("pause", handlePause);
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("loadstart", handleLoadStart);
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("waiting", handleWaiting);
+    video.addEventListener("playing", handlePlaying);
 
     return () => {
       video.removeEventListener("play", handlePlay);
@@ -200,17 +160,17 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
       video.removeEventListener("canplay", handleCanPlay);
       video.removeEventListener("waiting", handleWaiting);
       video.removeEventListener("playing", handlePlaying);
-      video.removeEventListener("error", handleError);
     };
-  }, [handleLoadedMetadata, handleTimeUpdate, handleLoadStart, handleCanPlay, handleWaiting, handlePlaying]);
+  }, []);
 
-  // Calculate progress percentage with safety check
-  const progress = duration > 0 && isFinite(currentTime) ? Math.min((currentTime / duration) * 100, 100) : 0;
+  const progress =
+    duration > 0 && isFinite(currentTime)
+      ? Math.min((currentTime / duration) * 100, 100)
+      : 0;
 
   const editingSoftware = [
     { name: "After Effects", icon: Zap },
-    // { name: "Premiere Pro", icon: Scissors },
-    { name: "DaVinci Resolve", icon: Palette }
+    { name: "DaVinci Resolve", icon: Palette },
   ];
 
   return (
@@ -220,21 +180,20 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{
-        background: isPlaying 
-          ? "rgba(0, 0, 0, 0.92)" 
-          : "rgba(0, 0, 0, 0.85)"
+        background: isPlaying
+          ? "rgba(0, 0, 0, 0.92)"
+          : "rgba(0, 0, 0, 0.85)",
       }}
     >
-      {/* Optimized backdrop blur */}
-      <div 
+      <div
         className="absolute sm:overflow-y-hidden inset-0"
         style={{
           backdropFilter: isPlaying ? "blur(12px)" : "blur(6px)",
           transition: "backdrop-filter 0.3s ease",
-          willChange: "backdrop-filter"
+          willChange: "backdrop-filter",
         }}
       />
-      
+
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -242,7 +201,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
         transition={{ type: "spring", duration: 0.4 }}
         className="relative w-full max-w-4xl sm:overflow-y-hidden max-h-[85vh] bg-gradient-to-br from-neutral-900/95 to-neutral-800/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10"
       >
-        {/* Close Button */}
         <AnimatePresence>
           <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
@@ -256,29 +214,25 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
         </AnimatePresence>
 
         <div className="flex h-full max-h-[85vh]">
-          {/* Video Container */}
           <div
             className="relative flex-[2] min-h-0"
-            ref={videoContainerRef}
             onMouseMove={handleVideoMouseMove}
             onMouseEnter={handleVideoMouseMove}
           >
             <video
               ref={videoRef}
               src={video.src}
-              className="w-full h-full  object-contain object-center rounded-l-2xl"
+              className="w-full h-full object-contain object-center rounded-l-2xl"
               preload="auto"
               playsInline
-              webkit-playsinline="true"
               muted={false}
               style={{
-                transform: "translateZ(0)", // Force hardware acceleration
+                transform: "translateZ(0)",
                 backfaceVisibility: "hidden",
                 perspective: 1000,
               }}
             />
 
-            {/* Loading indicator */}
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-l-2xl">
                 <motion.div
@@ -289,7 +243,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
               </div>
             )}
 
-            {/* Video Overlay Controls */}
             <AnimatePresence>
               {showControls && !isLoading && (
                 <motion.div
@@ -299,7 +252,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                   className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 rounded-l-2xl"
                   style={{ willChange: "opacity" }}
                 >
-                  {/* Center Play/Pause Button */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
@@ -311,7 +263,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                     </motion.button>
                   </div>
 
-                  {/* Bottom Controls Bar */}
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <div className="flex items-center gap-3 text-white">
                       <motion.button
@@ -322,7 +273,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                       >
                         {isPlaying ? <Pause size={16} /> : <Play size={16} />}
                       </motion.button>
-                      
+
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -332,10 +283,11 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                         {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
                       </motion.button>
 
-                      {/* Video Progress/Time */}
                       <div className="flex-1 flex items-center justify-center">
                         <div className="bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-white/80">
-                          {duration > 0 ? `${formatTime(currentTime)} / ${formatTime(duration)}` : (video.duration || "0:00")}
+                          {duration > 0
+                            ? `${formatTime(currentTime)} / ${formatTime(duration)}`
+                            : video.duration || "0:00"}
                         </div>
                       </div>
 
@@ -354,9 +306,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
             </AnimatePresence>
           </div>
 
-          {/* Right Panel - Video Details */}
           <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-neutral-900/98 to-neutral-800/98 backdrop-blur-xl overflow-y-hidden">
-            {/* Title and Description */}
             <div className="space-y-3 mt-3">
               <h2 className="text-xl font-bold text-white leading-tight">
                 {video.title}
@@ -366,12 +316,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
               </p>
             </div>
 
-            {/* View Count */}
-            {/* <div className="flex items-center gap-2 text-neutral-400 text-sm">
-              <span>Music Used:</span>
-            </div> */}
-
-            {/* Editing Software Used */}
             <div className="space-y-3">
               <h3 className="text-white font-semibold text-sm flex items-center gap-2">
                 <Monitor size={16} />
@@ -391,7 +335,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex flex-col gap-3 pt-4">
               <motion.button
                 whileHover={{ scale: 1.03, y: -1 }}
@@ -403,14 +346,12 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                     : "bg-gradient-to-r from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 text-white border border-white/20 hover:border-white/30"
                 }`}
               >
-                <Heart 
-                  size={18} 
+                <Heart
+                  size={18}
                   fill={isLiked ? "currentColor" : "none"}
                   className="transition-all duration-200"
                 />
-                <span>
-                  {isLiked ? "Liked" : "Like"}
-                </span>
+                <span>{isLiked ? "Liked" : "Like"}</span>
               </motion.button>
 
               <motion.button
@@ -423,7 +364,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
               </motion.button>
             </div>
 
-            {/* Duration Info */}
             {(duration > 0 || video.duration) && (
               <div className="pt-4 border-t border-white/10">
                 <div className="flex items-center justify-between text-xs">
@@ -436,14 +376,13 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                     </span>
                   )}
                 </div>
-                {/* Progress bar */}
                 {duration > 0 && (
                   <div className="w-full bg-white/10 rounded-full h-1 mt-2">
-                    <div 
+                    <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-1 rounded-full transition-all duration-200"
-                      style={{ 
+                      style={{
                         width: `${Math.min(progress, 100)}%`,
-                        willChange: "width"
+                        willChange: "width",
                       }}
                     />
                   </div>
@@ -451,7 +390,6 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
               </div>
             )}
 
-            {/* Creator Info */}
             <div className="pt-4 border-t border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
