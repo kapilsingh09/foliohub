@@ -1,6 +1,5 @@
 import React from 'react'
 import { Instagram, Twitter, Github } from 'lucide-react'
-import { motion } from 'motion/react'
 
 const socials = [
   { name: 'Instagram', href: 'https://instagram.com', icon: <Instagram /> },
@@ -23,7 +22,7 @@ const Footer = () => {
         </div>
         
         <div className="flex gap-3">
-          {socials.map((item, i) => (
+          {socials.map((item) => (
             <a
               href={item.href}
               key={item.name}

@@ -5,7 +5,7 @@ import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, Har
 import React from "react"
 
 interface VideoSliderProps {
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef?: React.RefObject<HTMLDivElement>
 }
 
 const videos = [
@@ -35,7 +35,7 @@ const videos = [
   }
 ]
 
-const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
+const VideoSlider: React.FC<VideoSliderProps> = () => {
   const [videoIndex, setVideoIndex] = useState(0)
   const [isMuted, setIsMuted] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -118,12 +118,12 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     if (videoRef.current) {
       if (videoRef.current.requestFullscreen) {
         videoRef.current.requestFullscreen()
-      } else if ((videoRef.current as any).webkitRequestFullscreen) {
-        (videoRef.current as any).webkitRequestFullscreen()
-      } else if ((videoRef.current as any).mozRequestFullScreen) {
-        (videoRef.current as any).mozRequestFullScreen()
-      } else if ((videoRef.current as any).msRequestFullscreen) {
-        (videoRef.current as any).msRequestFullscreen()
+      } else if ((videoRef.current as HTMLVideoElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
+        (videoRef.current as HTMLVideoElement & { webkitRequestFullscreen: () => void }).webkitRequestFullscreen()
+      } else if ((videoRef.current as HTMLVideoElement & { mozRequestFullScreen?: () => void }).mozRequestFullScreen) {
+        (videoRef.current as HTMLVideoElement & { mozRequestFullScreen: () => void }).mozRequestFullScreen()
+      } else if ((videoRef.current as HTMLVideoElement & { msRequestFullscreen?: () => void }).msRequestFullscreen) {
+        (videoRef.current as HTMLVideoElement & { msRequestFullscreen: () => void }).msRequestFullscreen()
       }
     }
   }
@@ -385,11 +385,9 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
               >
                 {/* Thumbnail Image - Responsive height */}
                 <div className="relative h-20 md:h-32 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden rounded-xl">
-                  <img 
-                    src={video.thumbnail} 
-                    alt={video.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 rounded-xl"
-                  />
+                  <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center rounded-xl">
+                    <span className="text-white text-sm">{video.name}</span>
+                  </div>
                   
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-xl" />

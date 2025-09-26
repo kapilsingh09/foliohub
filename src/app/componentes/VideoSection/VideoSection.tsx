@@ -1,21 +1,12 @@
 "use client"
 import RightSection from "./RightSection"
 import { motion } from "motion/react"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import Image from "next/image"
 
 const EditorShowcase = () => {
-  const [isHovered, setIsHovered] = useState(false)
-  const [coords, setCoords] = useState({ x: 0, y: 0 })
-
   const containerRef = useRef<HTMLDivElement>(null) 
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    setCoords({ x, y })
-  }
 
   return (
     <div
@@ -39,9 +30,6 @@ const EditorShowcase = () => {
           <motion.div className="relative flex flex-col items-start group ">
             <div
               className="relative z-10 w-full flex justify-start h-[30vh]"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              onMouseMove={handleMouseMove}
             >
               <div className="relative overflow-hidden rounded-2xl">
                 <Image
@@ -80,9 +68,6 @@ const EditorShowcase = () => {
           <motion.div className="flex flex-col items-end">
             <div
               className="w-full flex justify-end"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              onMouseMove={handleMouseMove}
             >
               <div className="relative overflow-hidden rounded-2xl group">
                 <Image
@@ -107,7 +92,7 @@ const EditorShowcase = () => {
 
         {/* RIGHT BOX */}
         <div className="w-full md:w-[40%] xl:w-[50%]   sm:w-[60%]">
-          <RightSection containerRef={containerRef as React.RefObject<HTMLDivElement>} />
+          <RightSection />
         </div>
       </section>
 
