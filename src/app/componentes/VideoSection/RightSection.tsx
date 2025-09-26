@@ -2,64 +2,57 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
-import { useDragControls } from "framer-motion"
 import React from "react"
 
 interface VideoSliderProps {
   containerRef: React.RefObject<HTMLDivElement>
 }
 
+const videos = [
+  {
+    src: "/videos/Oldone.mp4",
+    name: "Original Video",
+    type: "MP4 Video",
+    size: "156.2 MB",
+    resolution: "1920 × 1080",
+    codec: "H.264",
+    duration: "4:32",
+    created: "Dec 15, 2023",
+    thumbnail: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=300&fit=crop&crop=center",
+    description: "Original unedited footage"
+  },
+  {
+    src: "/videos/Realone.mp4", 
+    name: "Edited Video",
+    type: "MP4 Video",
+    size: "89.7 MB",
+    resolution: "1280 × 720",
+    codec: "H.264",
+    duration: "3:18",
+    created: "Nov 28, 2023",
+    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=300&fit=crop&crop=center",
+    description: "Professionally edited version"
+  }
+]
+
 const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
   const [videoIndex, setVideoIndex] = useState(0)
-  const [ismuted, setIsmuted] = useState(false)
-  const [isplay, setIsplay] = useState(false)
-  const [durations, setDurations] = useState<number[]>([])
+  const [isMuted, setIsMuted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [durations, setDurations] = useState<number[]>([0, 0])
   const [currentTime, setCurrentTime] = useState(0)
   const [showInfo, setShowInfo] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  const videos = [
-    {
-      src: "/videos/Oldone.mp4",
-      name: "Original Video",
-      type: "MP4 Video",
-      size: "156.2 MB",
-      resolution: "1920 × 1080",
-      codec: "H.264",
-      duration: "4:32",
-      created: "Dec 15, 2023",
-      thumbnail: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=300&fit=crop&crop=center",
-      description: "Original unedited footage"
-    },
-    {
-      src: "/videos/Realone.mp4", 
-      name: "Edited Video",
-      type: "MP4 Video",
-      size: "89.7 MB",
-      resolution: "1280 × 720",
-      codec: "H.264",
-      duration: "3:18",
-      created: "Nov 28, 2023",
-      thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=300&fit=crop&crop=center",
-      description: "Professionally edited version"
-    }
-  ]
-
-  const controls = useDragControls()
-
   // Handle video selection with smooth transition
   const handleVideoSelection = (index: number) => {
     if (index !== videoIndex && !isTransitioning) {
       setIsTransitioning(true)
-      setIsplay(false)
-      
-      // Pause current video
+      setIsPlaying(false)
       if (videoRef.current) {
         videoRef.current.pause()
       }
-      
-      // Smooth transition
       setTimeout(() => {
         setVideoIndex(index)
         setTimeout(() => {
@@ -95,7 +88,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
   // Reset time when video changes
   useEffect(() => {
     setCurrentTime(0)
-    setIsplay(false)
+    setIsPlaying(false)
   }, [videoIndex])
 
   // Play / Pause toggle
@@ -103,10 +96,10 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play()
-        setIsplay(true)
+        setIsPlaying(true)
       } else {
         videoRef.current.pause()
-        setIsplay(false)
+        setIsPlaying(false)
       }
     }
   }
@@ -116,20 +109,28 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     if (videoRef.current) {
       const value = !videoRef.current.muted
       videoRef.current.muted = value
-      setIsmuted(value)
+      setIsMuted(value)
     }
   }
 
   // Fullscreen
   const handleFullscreen = () => {
-    if (videoRef.current && videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen()
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen()
+      } else if ((videoRef.current as any).webkitRequestFullscreen) {
+        (videoRef.current as any).webkitRequestFullscreen()
+      } else if ((videoRef.current as any).mozRequestFullScreen) {
+        (videoRef.current as any).mozRequestFullScreen()
+      } else if ((videoRef.current as any).msRequestFullscreen) {
+        (videoRef.current as any).msRequestFullscreen()
+      }
     }
   }
 
   // Format seconds → mm:ss
   const formatTime = (seconds: number) => {
-    if (!seconds || isNaN(seconds)) return "0:00"
+    if (typeof seconds !== "number" || isNaN(seconds) || seconds < 0) return "0:00"
     const minutes = Math.floor(seconds / 60)
     const secs = Math.floor(seconds % 60)
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`
@@ -140,24 +141,17 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
     : 0
 
   return (
-    <div className="w-full  relative items-center justify-center overflow-hidden px-0 ">
+    <div className="w-full relative items-center justify-center overflow-hidden px-0">
       {/* Right section heading */}
       <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
         <h2 className="sm:text-lg md:text-2xl font-sans font-bold font-poppins text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] tracking-tight ">
           Edit <span className="underline underline-offset-2 decoration-pink-400 decoration-2">Showdown</span>: Side-by-Side
         </h2>
-        
       </div>
       <p className="text-sm md:text-base text-white/80 mb-2 md:mb-3 px-2 md:px-0">Watch and compare different edits seamlessly.</p>
 
       <motion.div
-        // drag={window.innerWidth >= 1024}
-        // dragControls={controls}
-        // dragConstraints={containerRef}
-        // dragElastic={0.1}
-        // dragMomentum={false}
-        className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl "
-       
+        className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
         transition={{ duration: 0.3 }}
       >
         {/* Enhanced Mac-style window buttons - Responsive */}
@@ -167,28 +161,33 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
               className="h-2.5 w-2.5 md:h-3.5 md:w-3.5 bg-red-500 rounded-full border border-red-700 shadow-inner hover:bg-red-400 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              tabIndex={-1}
+              aria-label="Close"
             />
             <motion.button 
               className="h-2.5 w-2.5 md:h-3.5 md:w-3.5 bg-yellow-400 rounded-full border border-yellow-500 shadow-inner hover:bg-yellow-300 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              tabIndex={-1}
+              aria-label="Minimize"
             />
             <motion.button 
               className="h-2.5 w-2.5 md:h-3.5 md:w-3.5 bg-green-500 rounded-full border border-green-700 shadow-inner hover:bg-green-400 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              tabIndex={-1}
+              aria-label="Maximize"
             />
           </div>
-          
           <div className="flex items-center">
             <p className="text-white text-xs md:text-sm font-medium hidden sm:block">Premium Video Experience</p>
           </div>
-          
           <motion.button
-            onClick={() => setShowInfo(!showInfo)}
+            onClick={() => setShowInfo((v) => !v)}
             className="h-4 w-4 md:h-5 md:w-5 bg-gray-400 hover:bg-gray-500 rounded-full border border-gray-500 shadow-inner flex items-center justify-center text-white text-xs font-bold transition-all duration-200"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
+            aria-label="Show Info"
           >
             <Info size={8} />
           </motion.button>
@@ -205,33 +204,32 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
               className="w-full h-full object-contain rounded-xl"
               playsInline
               preload="auto"
-              muted={ismuted}
-              onPlay={() => setIsplay(true)}
-              onPause={() => setIsplay(false)}
+              muted={isMuted}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
               animate={{
                 scale: isTransitioning ? 1.02 : 1,
                 opacity: isTransitioning ? 0.7 : 1
               }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
+              controls={false}
             />
 
             {/* Progress bar overlay */}
-            {progressPercent > 0 && (
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-25">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-            )}
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-25">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
             
             {/* Info Overlay - Responsive */}
             <AnimatePresence>
               {showInfo && (
                 <motion.div
-                  initial={{ opacity: 0, }}
-                  animate={{ opacity: 1,  }}
-                  exit={{ opacity: 0, }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                   className="absolute inset-0 bg-black/60 rounded-xl z-40 flex items-center justify-center p-2"
                 >
@@ -249,6 +247,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
                         className="p-1 rounded-full hover:bg-white/20 transition-colors"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
+                        aria-label="Close Info"
                       >
                         <X size={16} className="text-white md:w-[18px] md:h-[18px]" />
                       </motion.button>
@@ -305,7 +304,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
                         <p className="text-xs md:text-sm font-medium text-blue-300 mb-1">Current Status</p>
                         <div className="text-xs text-blue-200 space-y-1">
                           <p>Progress: {Math.round(progressPercent)}% ({formatTime(currentTime)})</p>
-                          <p>State: {isplay ? "Playing" : "Paused"} • Audio: {ismuted ? "Muted" : "On"}</p>
+                          <p>State: {isPlaying ? "Playing" : "Paused"} • Audio: {isMuted ? "Muted" : "On"}</p>
                         </div>
                       </div>
                     </div>
@@ -325,8 +324,9 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
                 whileTap={{ scale: 0.92 }}
                 onClick={handlePlay}
                 className="bg-white/20 hover:bg-white/30 rounded-full p-2 md:p-3 text-white transition-all shadow-lg"
+                aria-label={isPlaying ? "Pause" : "Play"}
               >
-                {isplay ? <Pause size={14} className="md:w-[18px] md:h-[18px]" /> : <Play size={14} className="md:w-[18px] md:h-[18px]" />}
+                {isPlaying ? <Pause size={14} className="md:w-[18px] md:h-[18px]" /> : <Play size={14} className="md:w-[18px] md:h-[18px]" />}
               </motion.button>
 
               <motion.button
@@ -334,8 +334,9 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
                 whileTap={{ scale: 0.92 }}
                 onClick={handleMute}
                 className="bg-white/20 hover:bg-white/30 rounded-full p-2 md:p-3 text-white transition-all shadow-lg"
+                aria-label={isMuted ? "Unmute" : "Mute"}
               >
-                {ismuted ? <VolumeX size={14} className="md:w-[18px] md:h-[18px]" /> : <Volume2 size={14} className="md:w-[18px] md:h-[18px]" />}
+                {isMuted ? <VolumeX size={14} className="md:w-[18px] md:h-[18px]" /> : <Volume2 size={14} className="md:w-[18px] md:h-[18px]" />}
               </motion.button>
             </div>
 
@@ -350,6 +351,7 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
               whileTap={{ scale: 0.92 }}
               onClick={handleFullscreen}
               className="bg-white/20 hover:bg-white/30 rounded-full p-2 md:p-3 text-white transition-all shadow-lg"
+              aria-label="Fullscreen"
             >
               <Maximize size={14} className="md:w-[18px] md:h-[18px]" />
             </motion.button>
@@ -371,12 +373,15 @@ const VideoSlider: React.FC<VideoSliderProps> = ({ containerRef }) => {
                   videoIndex === index 
                     ? 'ring-2 md:ring-3 ring-red-500 rounded-xl shadow-md shadow-blue-500/50' 
                     : 'hover:ring-2 hover:ring-white/30 rounded-xl'
-                } overflow-hidden transition-all duration-300`}
+                } transition-all duration-300`}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
+                aria-current={videoIndex === index}
+                tabIndex={0}
+                role="button"
               >
                 {/* Thumbnail Image - Responsive height */}
                 <div className="relative h-20 md:h-32 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden rounded-xl">

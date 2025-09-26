@@ -64,11 +64,11 @@ const totalWidth = cardWidth * totalCards;
 // Create multiple sets for a seamless loop
 const cardSets = Array(4).fill(clients).flat();
 
-const cardVariants = {
-  initial: { opacity: 0, y: 40, scale: 0.95 },
-  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
-  exit: { opacity: 0, y: -40, scale: 0.95, transition: { duration: 0.3, ease: "easeIn" } },
-};
+// const cardVariants = {
+//   initial: { opacity: 0, y: 40, scale: 0.95 },
+//   animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+//   exit: { opacity: 0, y: -40, scale: 0.95, transition: { duration: 0.3, ease: "easeIn" } },
+// };
 
 export default function InfiniteSlider() {
   const [isPaused, setIsPaused] = useState(false);
@@ -102,7 +102,6 @@ export default function InfiniteSlider() {
   // For mobile/small screens, show one card at a time with framer-motion slide
   // For desktop, show the infinite slider as before
   // We'll use a media query to determine which to show
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <div className="relative overflow-hidden py-20 px-4 text-white font-inter">
@@ -125,7 +124,7 @@ export default function InfiniteSlider() {
           {/* Responsive: show slider or single card with framer-motion slide */}
           <div className="w-[85%] mx-auto h-[43vh] flex items-center justify-center overflow-hidden">
             {/* Mobile/Tablet: Animate single card with slide */}
-            <div className="block md:hidden w-full h-full flex items-center justify-center relative">
+            <div className="block md:hidden w-full h-full  items-center justify-center relative">
               <button
                 aria-label="Previous"
                 className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 rounded-full p-2"
@@ -152,7 +151,7 @@ export default function InfiniteSlider() {
                       rounded-3xl border border-gray-700
                       bg-gradient-to-br from-zinc-800 to-zinc-900
                     "
-                    variants={cardVariants}
+               
                     initial="initial"
                     animate="animate"
                     exit="exit"
