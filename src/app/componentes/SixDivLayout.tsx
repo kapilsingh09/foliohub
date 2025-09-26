@@ -3,31 +3,27 @@
 import { useState, useEffect, useRef } from "react";
 import { UserPlus, Play } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import Image from "next/image";
 import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";
 import { BackgroundLines } from "./ui/background-lines";
 
-//img kit subscription ended  
-// const videos = [
-//   {
-//     src: "/m3.mp4",
-//     title: "Cool Car Edits",
-//     description: "High-octane car edit with fast cuts and smooth transitions",
-//   },
-//   {
-//     src: "https://ik.imagekit.io/neko5amq/Videos/brothers%20(1).mp4?updatedAt=1757058072539",
-//     title: "Brotherhood Ride",
-//     description: "Two brothers, one passion – cinematic storytelling on wheels",
-//   },
-//   {
-//     src: "https://ik.imagekit.io/neko5amq/Videos/finalBMW.mp4?updatedAt=17570580737244",
-//     title: "BMW Showcase",
-//     description: "Luxury meets motion. Smooth transitions and cinematic vibes",
-//   },
-// ];
 
-const videos = [
+// Define types for videos and toolIcons
+type Video = {
+  src: string;
+  title: string;
+  description: string;
+  views: number;
+};
+
+type ToolIcon = {
+  src: string;
+  label: string;
+};
+
+const videos: Video[] = [
   {
     src: "videos/OrigionalVideo.mp4",
     title: "Cool Car Edits",
@@ -48,64 +44,72 @@ const videos = [
   },
 ];
 
-const texts = [
+const texts: string[] = [
   "Cinematic Visuals",
   "Rhythm in Motion",
   "Stories Through Color",
-  "Edits That Leave a Mark"
+  "Edits That Leave a Mark",
 ];
 
-const toolIcons = [
+const toolIcons: ToolIcon[] = [
   { src: "/log/Blender-Logo-3D-Software-84623.png", label: "Blender" },
   { src: "/log/images.jpeg", label: "Colorist" },
   { src: "/log/pngwing.com.png", label: "DaVinci" },
 ];
 
-// Animation variants for smooth entrance
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i = 0) => ({
+// Animation variants with proper typing
+const fadeInUp: Variants = {
+  hidden: { 
+    opacity: 0, 
+    y: 40 
+  },
+  visible: (i: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.7,
-      ease: "easeOut"
-    }
-  })
+    transition: { 
+      delay: i * 0.15, 
+      duration: 0.7, 
+      ease: "easeOut" 
+    },
+  }),
 };
 
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: (i = 0) => ({
+const fadeIn: Variants = {
+  hidden: { 
+    opacity: 0 
+  },
+  visible: (i: number = 0) => ({
     opacity: 1,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.7,
-      ease: "easeOut"
-    }
-  })
+    transition: { 
+      delay: i * 0.1, 
+      duration: 0.7, 
+      ease: "easeOut" 
+    },
+  }),
 };
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: (i = 0) => ({
+const scaleIn: Variants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.95 
+  },
+  visible: (i: number = 0) => ({
     opacity: 1,
     scale: 1,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  })
+    transition: { 
+      delay: i * 0.1, 
+      duration: 0.6, 
+      ease: "easeOut" 
+    },
+  }),
 };
 
 const SixDivLayout = () => {
-  const [isCardOpen, setIsCardOpen] = useState(false);
-  const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
-  const [index, setIndex] = useState(0);
+  const [isCardOpen, setIsCardOpen] = useState<boolean>(false);
+  const [activeVideo, setActiveVideo] = useState<Video | null>(null);
+  const [index, setIndex] = useState<number>(0);
 
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(scrollRef, { once: true });
 
   useEffect(() => {
@@ -115,13 +119,35 @@ const SixDivLayout = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 🔥 Custom hook for lazy video loading
+  const LazyMotionVideo = ({
+    src,
+    className,
+  }: {
+    src: string;
+    className?: string;
+  }) => {
+    const ref = useRef<HTMLVideoElement | null>(null);
+    const videoInView = useInView(ref, { once: true });
+
+    return (
+      <motion.video
+        ref={ref}
+        src={videoInView ? src : undefined}
+        className={className}
+        loop
+        autoPlay
+        muted
+        playsInline
+        initial={{ scale: 1.05, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      />
+    );
+  };
+
   return (
-    <motion.div
-      className="min-h-screen w-full p-4 md:p-8 overflow-hidden"
-      // initial="hidden"
-      // animate="visible"
-      // variants={fadeIn}
-    >
+    <motion.div className="min-h-screen w-full p-4 md:p-8 overflow-hidden">
       {/* ================= TOP SECTION ================= */}
       <motion.div
         className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4"
@@ -136,7 +162,7 @@ const SixDivLayout = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative h-[60vh]  md:h-[100vh] w-full md:w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden"
+          className="relative h-[60vh] md:h-[100vh] w-full md:w-1/2 border-4 border-white/20 rounded-3xl shadow-lg overflow-hidden"
         >
           <BackgroundLines>
             {/* Center Text */}
@@ -146,7 +172,7 @@ const SixDivLayout = () => {
               initial="hidden"
               animate="visible"
             >
-              {/* Animated H1 only */}
+              {/* Animated H1 */}
               <div className="h-[60px] flex items-center">
                 <AnimatePresence mode="wait">
                   <motion.h1
@@ -162,16 +188,16 @@ const SixDivLayout = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Static Subtext */}
               <motion.p
                 className="mt-4 text-sm md:text-lg text-neutral-300 max-w-md leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
               >
-                Hey, I&apos;m <span className="text-pink-400 font-semibold">Dhruv</span> — 
-                blending motion, pacing, and vibrant color to craft edits 
-                that <span className="text-purple-400">feel cinematic</span>.
+                Hey, I&apos;m{" "}
+                <span className="text-pink-400 font-semibold">Dhruv</span> — 
+                blending motion, pacing, and vibrant color to craft edits that{" "}
+                <span className="text-purple-400">feel cinematic</span>.
               </motion.p>
 
               <motion.div
@@ -211,7 +237,6 @@ const SixDivLayout = () => {
                       className="inline-block w-6 h-6 object-contain"
                     />
                   </motion.div>
-                  {/* Tooltip */}
                   <span className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-black/80 text-white text-[10px] px-2 py-1 rounded-md transition-all">
                     {item.label}
                   </span>
@@ -226,7 +251,7 @@ const SixDivLayout = () => {
                 repeat: Infinity,
                 repeatType: "loop",
                 duration: 2.5,
-                ease: [0.4, 0, 0.2, 1]
+                ease: [0.4, 0, 0.2, 1],
               }}
               className="absolute bottom-3 right-5 text-neutral-400 text-xs"
             >
@@ -237,7 +262,7 @@ const SixDivLayout = () => {
                   repeat: Infinity,
                   repeatType: "loop",
                   duration: 2.5,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
                 }}
               >
                 Scroll for more ↓
@@ -262,38 +287,24 @@ const SixDivLayout = () => {
             }}
             initial={{ opacity: 0, x: 120 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ type: "spring", stiffness: 80, damping: 18, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ type: "spring", stiffness: 80, damping: 18, duration: 0.7 }}
             whileHover={{ scale: 1.02 }}
-            className="relative h-[40vh]  md:h-[50vh] rounded-3xl border border-black overflow-hidden shadow-lg hover:cursor-pointer group bg-gradient-to-b from-black via-black/80 to-black/60"
+            className="relative h-[40vh] md:h-[50vh] rounded-3xl border border-black overflow-hidden shadow-lg hover:cursor-pointer group bg-gradient-to-b from-black via-black/80 to-black/60"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <motion.video
-              src='/videos/OverlayThumb.mp4'
-              className="w-full h-full object-cover  transition-transform duration-500 group-hover:scale-105"
-              loop
-              autoPlay
-              muted
-              playsInline
-              loading="lazy"
-              initial={{ scale: 1.05, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+            <LazyMotionVideo
+              src="/videos/OverlayThumb.mp4"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <motion.div
-              className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-            >
-              <h2 className="text-xl md:text-2xl font-bold text-white">{videos[0].title}</h2>
-              <p className="text-xs md:text-sm text-neutral-400">{videos[0].description}</p>
+            <motion.div className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl">
+              <h2 className="text-xl md:text-2xl font-bold text-white">
+                {videos[0].title}
+              </h2>
+              <p className="text-xs md:text-sm text-neutral-400">
+                {videos[0].description}
+              </p>
             </motion.div>
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ height: "40%" }}
-              initial={{ scale: 0 }}
-              whileHover={{ scale: 1 }}
-            >
+            <motion.div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
                 <Play className="w-8 h-8 text-white" fill="white" />
               </div>
@@ -314,40 +325,26 @@ const SixDivLayout = () => {
                 setActiveVideo(videos[1]);
                 setIsCardOpen(true);
               }}
+              className="h-[30vh] md:h-[48vh] w-full sm:w-1/2 rounded-2xl shadow-lg flex items-center justify-center relative overflow-hidden group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 80, damping: 18 }}
               initial={{ opacity: 0, y: -40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 80, damping: 18, duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
-              whileHover={{ scale: 1.02 }}
-              className="h-[30vh] md:h-[48vh] w-full sm:w-1/2 rounded-2xl shadow-lg flex items-center justify-center relative overflow-hidden group cursor-pointer"
               viewport={{ once: true, amount: 0.2 }}
             >
-              <motion.video
+              <LazyMotionVideo
                 src={videos[1].src}
                 className="object-center object-cover h-full w-full"
-                loop
-                autoPlay
-                muted
-                playsInline
-                loading="lazy"
-                initial={{ scale: 1.05, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
               />
-              <motion.div
-                className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-              >
-                <h2 className="text-xl md:text-2xl font-bold text-white">{videos[1].title}</h2>
-                <p className="text-xs md:text-sm text-neutral-400">{videos[1].description}</p>
+              <motion.div className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl">
+                <h2 className="text-xl md:text-2xl font-bold text-white">
+                  {videos[1].title}
+                </h2>
+                <p className="text-xs md:text-sm text-neutral-400">
+                  {videos[1].description}
+                </p>
               </motion.div>
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ height: "40%" }}
-                initial={{ scale: 0 }}
-                whileHover={{ scale: 1 }}
-              >
+              <motion.div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
                   <Play className="w-8 h-8 text-white" fill="white" />
                 </div>
@@ -367,33 +364,19 @@ const SixDivLayout = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
             >
-              <motion.video
+              <LazyMotionVideo
                 src={videos[2].src}
                 className="object-center object-cover h-full w-full"
-                loop
-                autoPlay
-                muted
-                playsInline
-                loading="lazy"
-                initial={{ scale: 1.05, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
               />
-              <motion.div
-                className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-              >
-                <h2 className="text-xl md:text-2xl font-bold text-white">{videos[2].title}</h2>
-                <p className="text-xs md:text-sm text-neutral-400">{videos[2].description}</p>
+              <motion.div className="absolute -bottom-2 left-0 w-full p-5 bg-gradient-to-b from-transparent to-black rounded-b-2xl">
+                <h2 className="text-xl md:text-2xl font-bold text-white">
+                  {videos[2].title}
+                </h2>
+                <p className="text-xs md:text-sm text-neutral-400">
+                  {videos[2].description}
+                </p>
               </motion.div>
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ height: "40%" }}
-                initial={{ scale: 0 }}
-                whileHover={{ scale: 1 }}
-              >
+              <motion.div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
                   <Play className="w-8 h-8 text-white" fill="white" />
                 </div>
@@ -450,11 +433,7 @@ const SixDivLayout = () => {
             >
               <UserPlus className="w-8 h-8 md:w-12 md:h-12 text-blue-400 drop-shadow-md" />
             </motion.div>
-            <motion.p
-              className="text-center text-lg md:text-xl font-semibold text-white leading-snug"
-              initial={{ opacity: 0.8 }}
-              whileHover={{ opacity: 1 }}
-            >
+            <motion.p className="text-center text-lg md:text-xl font-semibold text-white leading-snug">
               Do you want to start a project together?
             </motion.p>
             <CopyEmailButton />
@@ -474,25 +453,11 @@ const SixDivLayout = () => {
             animate={{ x: ["-100%", "200%"] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.div
-            className="relative z-10 text-xl md:text-3xl text-white text-center"
-            variants={scaleIn}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div
-              initial={{ scale: 1 }}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.3 }}
-            >
+          <motion.div className="relative z-10 text-xl md:text-3xl text-white text-center">
+            <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
               Portfolio Showcase
             </motion.div>
-            <motion.p
-              className="text-xs md:text-base font-normal mt-2 text-neutral-300 opacity-80"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-            >
+            <motion.p className="text-xs md:text-base font-normal mt-2 text-neutral-300 opacity-80">
               More projects coming soon
             </motion.p>
           </motion.div>

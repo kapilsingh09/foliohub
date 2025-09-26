@@ -34,19 +34,19 @@ const Navbar = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <nav
-        className={`fixed top-0 left-1/2 transform -translate-x-1/2 z-50 rounded-full mt-4 shadow-lg transition-all duration-300 overflow-hidden ${
-          scrolled
-            ? "backdrop-blur-lg bg-black/60 border-b border-white/10 rounded-4xl ring-white/10 w-[60%]"
-            : "bg-gradient-to-r from-transparent via-black/40 to-black/60 w-[89%]"
-        }`}
-        style={{
-          boxShadow: scrolled
-            ? "0 4px 24px 0 rgba(255, 0, 128, 0.08)"
-            : "0 2px 8px 0 rgba(255,255,255,0.04)",
-          border: "1px solid rgba(0,0,0,0.1)",
-        }}
-      >
+    <nav
+  className={`fixed top-0 left-1/2 transform -translate-x-1/2 z-50 rounded-full mt-4 shadow-lg transition-all duration-300 overflow-hidden ${
+    scrolled
+      ? "backdrop-blur-lg bg-black/60 border-b border-white/10 rounded-4xl ring-white/10 w-[90%] sm:w-[60%]"
+      : "bg-gradient-to-r from-transparent via-black/40 to-black/60 w-[90%] sm:w-[89%]"
+  }`}
+  style={{
+    boxShadow: scrolled
+      ? "0 4px 24px 0 rgba(255, 0, 128, 0.08)"
+      : "0 2px 8px 0 rgba(255,255,255,0.04)",
+  }}
+>
+
         <div className="max-w-9xl mx-auto px-4 sm:px-9 py-3 flex justify-between  items-center ">
           {/* Logo */}
           <Link

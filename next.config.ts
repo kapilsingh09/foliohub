@@ -11,10 +11,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  eslint: {
-    // 🚨 disables ESLint checks during production builds
-    ignoreDuringBuilds: true,
-  },
+  // eslint: {
+  //   // 🚨 disables ESLint checks during production builds
+  //   ignoreDuringBuilds: true,
+  // },
 };
 
 export default nextConfig;

@@ -5,9 +5,9 @@ import {  Mail, User,RotateCw, MessageCircle, Send } from "lucide-react";
 import { Vortex } from "./ui/vortex";
 
 const ContactForm = () => {
-  const [name, setName] = useState("Hello Kitty ");
-  const [email, setEmail] = useState("chulbuli@me.com");
-  const [message, setMessage] = useState("Hello there");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,15 +16,22 @@ const ContactForm = () => {
 
     try {
       e.preventDefault();
-      // const {name , email,message} = req.json()
+      
+      // Basic client-side validation
+      if (!name.trim() || !email.trim() || !message.trim()) {
+        alert('Please fill in all fields');
+        return;
+      }
 
       const res = await fetch("/api/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
       });
       
-      if (res.ok) {
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
         setStatus(true);
         setName('');
         setEmail('');
@@ -34,9 +41,14 @@ const ContactForm = () => {
         setTimeout(() => {
           setStatus(false);
         }, 4000);
+      } else {
+        // Handle API errors
+        const errorMessage = data.error || 'Failed to send message. Please try again.';
+        alert(errorMessage);
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      alert('Network error. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +60,7 @@ const ContactForm = () => {
     <div className="relative flex items-center justify-center min-h-screen w-full bg-transparent overflow-hidden">
       <Vortex
         backgroundColor="black"
-        className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
+        className="flex items-center flex-col justify-center px-4 sm:px-6 md:px-10 py-4 w-full h-full"
       >
         <AnimatePresence mode="wait">
           {status ? (
@@ -125,18 +137,18 @@ const ContactForm = () => {
               style={{ zIndex: 10 }}
             >
               {/* Header */}
-              <div className="px-8 pt-6 pb-3 text-center">
-                <h2 className="text-3xl font-bold text-white mb-2">
+              <div className="px-4 sm:px-6 md:px-8 pt-6 pb-3 text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                   Let&apos;s Work Together
                 </h2>
-                <p className="text-gray-200">
+                <p className="text-sm sm:text-base text-gray-200">
                   Ready to start your next project? I&apos;d love to hear from you.
                 </p>
               </div>
 
               {/* Form */}
               <form action="" onSubmit={handleForm} autoComplete="off">
-                <div className="px-8 pb-8 space-y-6">
+                <div className="px-4 sm:px-6 md:px-8 pb-8 space-y-4 sm:space-y-6">
                   {/* Name Field */}
                   <div className="space-y-2">
                     <label className="flex items-center text-sm font-semibold text-gray-200">
@@ -146,7 +158,7 @@ const ContactForm = () => {
                     <input
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
+                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-3 sm:p-4 text-sm sm:text-base text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
                       placeholder="Enter your full name"
                       type="text"
                       required
@@ -163,7 +175,7 @@ const ContactForm = () => {
                     <input
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
+                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-3 sm:p-4 text-sm sm:text-base text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
                       placeholder="Enter your email address"
                       type="email"
                       required
@@ -180,7 +192,7 @@ const ContactForm = () => {
                     <textarea
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-4 h-32 resize-none text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
+                      className="w-full bg-white/10 border border-gray-500 rounded-lg p-3 sm:p-4 h-24 sm:h-32 resize-none text-sm sm:text-base text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur"
                       placeholder="Tell me about your project, timeline, and requirements..."
                       required
                       autoComplete="off"
@@ -191,7 +203,7 @@ const ContactForm = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full px-1 py-3 text-lg text-center rounded-md cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-102  focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full px-1 py-3 text-base sm:text-lg text-center rounded-md cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-102  focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {isLoading ? (
                       <>

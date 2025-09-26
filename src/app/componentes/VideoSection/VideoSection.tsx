@@ -86,7 +86,7 @@ const EditorShowcase = () => {
             >
               <div className="relative overflow-hidden rounded-2xl group">
                 <Image
-                  src="/img/RINTARO TSUMUGI AND KAORUKO WAGURI(2).jpeg"
+                  src="/img/RINTARO TSUMUGI AND KAORUKO WAGURI(1).jpeg"
                   alt="After Editing"
                   width={400}
                   height={400}

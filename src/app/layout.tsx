@@ -30,13 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SmoothScrollProvider>
+        {/* <SmoothScrollProvider> */}
           <div className="relative w-full flex items-center justify-center">
             <Navbar />
           </div>
           {children}
           <Footer />
-        </SmoothScrollProvider>
+        {/* </SmoothScrollProvider> */}
       </body>
     </html>
   );
