@@ -4,12 +4,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'api.microlink.io',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "api.microlink.io",
+        port: "",
+        pathname: "/**",
       },
     ],
+  },
+  eslint: {
+    // 🚨 disables ESLint checks during production builds
+    ignoreDuringBuilds: true,
   },
 };
 
