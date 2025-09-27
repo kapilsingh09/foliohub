@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   // Optimize for production
-  swcMinify: true,
+  // swcMinify: true,
   compress: true,
   poweredByHeader: false,
 };

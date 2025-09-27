@@ -1,5 +1,5 @@
 "use client"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence, useAnimation, useInView, useScroll, useSpring, useTransform } from "motion/react"
 import { useRef, useState, useEffect } from "react"
 import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
 import React from "react"
@@ -44,6 +44,14 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
   const [showInfo, setShowInfo] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  // For scroll-based animation
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px -20% 0px" })
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] })
+  // Animate opacity and y on mount, and then scroll-based subtle parallax
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]), { stiffness: 80, damping: 20 })
+  const y = useSpring(useTransform(scrollYProgress, [0, 0.2, 1], [60, 0, -20]), { stiffness: 80, damping: 20 })
 
   // Handle video selection with smooth transition
   const handleVideoSelection = (index: number) => {
@@ -141,18 +149,31 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
     : 0
 
   return (
-    <div className="w-full relative items-center justify-center overflow-hidden px-0">
+    <div
+      ref={sectionRef}
+      className="w-full relative items-center justify-center overflow-hidden px-0"
+    >
       {/* Right section heading */}
-      <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
-        <h2 className="sm:text-lg md:text-2xl font-sans font-bold font-poppins text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] tracking-tight ">
-          Edit <span className="underline underline-offset-2 decoration-pink-400 decoration-2">Showdown</span>: Side-by-Side
-        </h2>
-      </div>
-      <p className="text-sm md:text-base text-white/80 mb-2 md:mb-3 px-2 md:px-0">Watch and compare different edits seamlessly.</p>
+      <motion.div
+        style={{ opacity, y }}
+        initial={{ opacity: 0, y: 60 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        <div className="w-full flex items-center justify-between mb-3 md:mb-4 px-2 md:px-0">
+          <h2 className="sm:text-lg md:text-2xl font-sans font-bold font-poppins text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-orange-500 bg-clip-text drop-shadow-[0_0_20px_rgba(168,85,247,0.6)] tracking-tight ">
+            Edit <span className="underline underline-offset-2 decoration-pink-400 decoration-2">Showdown</span>: Side-by-Side
+          </h2>
+        </div>
+        <p className="text-sm md:text-base text-white/80 mb-2 md:mb-3 px-2 md:px-0">Watch and compare different edits seamlessly.</p>
+      </motion.div>
 
       <motion.div
         className="h-auto w-full border-white/30 border-2 z-[1] relative flex flex-col justify-center items-center bg-black rounded-2xl overflow-hidden group cursor-pointer shadow-2xl"
-        transition={{ duration: 0.3 }}
+        style={{ opacity, y }}
+        initial={{ opacity: 0, y: 60 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         {/* Enhanced Mac-style window buttons - Responsive */}
         <div className="absolute top-2 md:top-4 left-2 md:left-4 right-2 md:right-4 flex items-center justify-between z-30">
@@ -194,7 +215,13 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
         </div>
 
         {/* Video container with responsive height */}
-        <div className="h-[40vh] md:h-[38vh] lg:h-[48vh] w-full mt-6 md:mt-8 p-4 md:p-6 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative">
+        <motion.div
+          className="h-[40vh] md:h-[38vh] lg:h-[48vh] w-full mt-6 md:mt-8 p-4 md:p-6 backdrop-blur-xl bg-black shadow-xl rounded-2xl relative"
+          style={{ opacity, y }}
+          initial={{ opacity: 0, y: 60 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+        >
           <div className="relative w-full h-full">
             <motion.video
               key={videoIndex}
@@ -313,10 +340,16 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
               )}
             </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
 
         {/* Controls bar - Responsive */}
-        <div className="w-[95%] md:w-[90%] max-w-4xl flex flex-col px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md rounded-2xl mb-4">
+        <motion.div
+          className="w-[95%] md:w-[90%] max-w-4xl flex flex-col px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md rounded-2xl mb-4"
+          style={{ opacity, y }}
+          initial={{ opacity: 0, y: 60 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
           <div className="w-full h-10 md:h-12 flex items-center justify-between">
             <div className="flex items-center gap-2 md:gap-3">   
               <motion.button
@@ -356,10 +389,16 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
               <Maximize size={14} className="md:w-[18px] md:h-[18px]" />
             </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Premium Video Selection Thumbnails - Responsive */}
-        <div className="w-full max-w-2xl px-4 md:px-6 pb-4 md:pb-6">
+        <motion.div
+          className="w-full max-w-2xl px-4 md:px-6 pb-4 md:pb-6"
+          style={{ opacity, y }}
+          initial={{ opacity: 0, y: 60 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.1, ease: "easeOut" }}
+        >
           <div className="text-center mb-3 md:mb-4">
             <span className="text-white/90 text-xs md:text-sm font-semibold tracking-wide">SELECT VIDEO VERSION</span>
           </div>
@@ -377,8 +416,8 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: index * 0.1 + 0.2 }}
                 aria-current={videoIndex === index}
                 tabIndex={0}
                 role="button"
@@ -432,13 +471,14 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
             <motion.p 
               key={videoIndex}
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
               className="text-white/70 text-xs md:text-sm px-2"
             >
               Now showing: <span className="text-white font-medium">{videos[videoIndex].name}</span>
             </motion.p>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   )
