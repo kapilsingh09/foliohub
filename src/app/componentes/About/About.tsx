@@ -1,7 +1,10 @@
-import React from 'react'
+"use client"  
+
+import React, { useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { SparklesCore } from '../ui/sparkles'
 import { Video, Edit, Palette, Play, Award, Calendar } from 'lucide-react'
+import { motion, useInView } from 'framer-motion' // 👈 IMPORT FRAMER MOTION
 
 // Assign different colors for each skill
 const skills = [
@@ -13,9 +16,43 @@ const skills = [
   { name: "Motion Graphics", icon: Edit, color: "bg-orange-500/20 text-orange-300 border-orange-400/40 hover:bg-orange-500/30" }
 ]
 
+// Define animation variants for cleaner code
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Stagger children animation
+    }
+  }
+}
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+}
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+}
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+}
+
+
 const About = () => {
+  const ref = useRef(null)
+  // useInView hook detects when the element is visible
+  const isInView = useInView(ref, { once: true, amount: 0.3 }) // Trigger once when 30% visible
+
   return (
-    <div className="min-h-screen lg:h-[40rem] relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md py-8 lg:py-0">
+    <div 
+      ref={ref} // Attach the ref to the main container
+      className="min-h-screen lg:h-[40rem] relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md py-8 lg:py-0"
+    >
       
       {/* Sparkles Background */}
       <div className="absolute inset-0 w-full h-full">
@@ -31,21 +68,34 @@ const About = () => {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <motion.div // Apply motion to the main content
+        className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
         
         {/* Heading */}
-        <div className="text-center mb-8 lg:mb-10">
+        <motion.div 
+          className="text-center mb-8 lg:mb-10"
+          variants={fadeIn}
+        >
           <div className="flex items-center justify-center gap-3 mb-2">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-wide">
               A Bit About Me
             </h2>
           </div>
-        </div>
+        </motion.div>
 
         <section className="flex flex-col lg:flex-row gap-8 lg:gap-6 max-w-6xl w-full">
           
           {/* Left - Image / Reel */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center">
+          <motion.div
+            className="w-full lg:w-1/2 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } } : { opacity: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeIn" } }}
+          >
             <div className="h-64 w-64 sm:h-80 sm:w-80 lg:h-[45vh] lg:w-[45vh] rounded-full overflow-hidden shadow-2xl border-4 border-violet-400/20">
               <Image
                 src="/kaoruko pfp __ (1).jpeg"
@@ -56,28 +106,40 @@ const About = () => {
                 loading="lazy"
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Right - Text Content */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
+          <motion.div 
+            className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left"
+            variants={slideInRight} // Slide in from the right
+          >
             
             {/* Who Am I Section */}
-            <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
+            <motion.div 
+                className="flex items-center justify-center lg:justify-start gap-2 mb-4"
+                variants={fadeIn}
+            >
               <Video className="w-6 h-6 text-violet-400" />
               <h3 className="text-2xl sm:text-3xl font-bold text-violet-400">
                 Who Am I? <span className="text-neutral-300 font-semibold ">— I&apos;m Dhruv</span>
               </h3>
-            </div>
+            </motion.div>
             
-            <p className="text-white text-base sm:text-lg leading-relaxed mb-6 max-w-2xl mx-auto lg:mx-0">
+            <motion.p 
+                className="text-white text-base sm:text-lg leading-relaxed mb-6 max-w-2xl mx-auto lg:mx-0"
+                variants={fadeIn}
+            >
               I&apos;m a passionate <span className="text-violet-400 font-semibold">Video Editor & Storyteller</span>
               {' '}who turns raw footage into captivating stories.
               With expertise in <span className="text-violet-400 font-semibold">cinematic editing, color grading, and motion graphics</span>,
               I craft videos that not only look stunning but also connect deeply with audiences.
-            </p>
+            </motion.p>
 
             {/* Animated Skills */}
-            <div className="mb-8">
+            <motion.div 
+                className="mb-8"
+                variants={fadeIn}
+            >
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
                 <Edit className="w-5 h-5 text-violet-400" />
                 <h4 className="text-lg font-semibold text-white">Skills & Tools</h4>
@@ -86,20 +148,29 @@ const About = () => {
                 {skills.map((skill, i) => {
                   const IconComponent = skill.icon
                   return (
-                    <span
+                    <motion.span // Animate each skill badge
                       key={i}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                      transition={{ 
+                          duration: 0.3, 
+                          delay: i * 0.05 + 0.5, // Stagger delay
+                      }}
                       className={`flex items-center gap-2 px-3 py-2 text-sm rounded-full border hover:scale-105 transition-all duration-200 cursor-default ${skill.color}`}
                     >
                       <IconComponent className="w-4 h-4" />
                       {skill.name}
-                    </span>
+                    </motion.span>
                   )
                 })}
               </div>
-            </div>
+            </motion.div>
 
             {/* Stats */}
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center lg:justify-start">
+            <motion.div 
+                className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center lg:justify-start"
+                variants={fadeIn}
+            >
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 mb-1">
                   <Award className="w-5 h-5 text-violet-400" />
@@ -115,11 +186,11 @@ const About = () => {
                 </div>
                 <p className="text-sm text-white/80">Years Experience</p>
               </div>
-            </div>
+            </motion.div>
             
-          </div>
+          </motion.div>
         </section>
-      </div>
+      </motion.div>
     </div>
   )
 }
