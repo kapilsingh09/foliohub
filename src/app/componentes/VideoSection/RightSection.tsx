@@ -1,5 +1,5 @@
 "use client"
-import { motion, AnimatePresence, useAnimation, useInView, useScroll, useSpring, useTransform } from "motion/react"
+import { motion, AnimatePresence, useInView, useScroll, useSpring, useTransform } from "motion/react"
 import { useRef, useState, useEffect } from "react"
 import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
 import React from "react"
@@ -65,6 +65,11 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
         setVideoIndex(index)
         setTimeout(() => {
           setIsTransitioning(false)
+          // Auto-play the new video after transition
+          if (videoRef.current) {
+            videoRef.current.play()
+            setIsPlaying(true)
+          }
         }, 400)
       }, 200)
     }

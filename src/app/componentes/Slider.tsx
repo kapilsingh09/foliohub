@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useAnimationFrame, AnimatePresence } from "motion/react";
+import { motion, useAnimationFrame, AnimatePresence, useInView } from "motion/react";
+import React from "react";
 
 // These are the pre-defined gradients for the client initials
 const backgroundGradients = [
@@ -64,17 +65,15 @@ const totalWidth = cardWidth * totalCards;
 // Create multiple sets for a seamless loop
 const cardSets = Array(4).fill(clients).flat();
 
-// const cardVariants = {
-//   initial: { opacity: 0, y: 40, scale: 0.95 },
-//   animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
-//   exit: { opacity: 0, y: -40, scale: 0.95, transition: { duration: 0.3, ease: "easeIn" } },
-// };
-
 export default function InfiniteSlider() {
   const [isPaused, setIsPaused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const x = useRef(0);
   const rerender = useState(0)[1];
+
+  // For scroll animation
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { amount: 0.3, once: true });
 
   // For manual sliding
   const handlePrev = () => {
@@ -103,7 +102,13 @@ export default function InfiniteSlider() {
   // For desktop, show the infinite slider as before
 
   return (
-    <div className="relative overflow-hidden py-20 px-4 text-white font-inter">
+    <motion.div
+      ref={sectionRef}
+      initial={{ opacity: 0, y: 80 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="relative overflow-hidden py-20 px-4 text-white font-inter"
+    >
       {/* Subtle radial gradient background */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950 to-gray-950 opacity-50"></div>
 
@@ -150,10 +155,9 @@ export default function InfiniteSlider() {
                       rounded-3xl border border-gray-700
                       bg-gradient-to-br from-zinc-800 to-zinc-900
                     "
-               
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
+                    initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -40, scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
                     <div className="flex items-center space-x-4 mb-5">
@@ -227,6 +231,6 @@ export default function InfiniteSlider() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,10 +1,10 @@
 "use client"  
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import Image from 'next/image'
 import { SparklesCore } from '../ui/sparkles'
 import { Video, Edit, Palette, Play, Award, Calendar } from 'lucide-react'
-import { motion, useInView } from 'framer-motion' // 👈 IMPORT FRAMER MOTION
+import { motion, useInView } from 'motion/react' // 👈 IMPORT FRAMER MOTION
 
 // Assign different colors for each skill
 const skills = [
@@ -16,32 +16,7 @@ const skills = [
   { name: "Motion Graphics", icon: Edit, color: "bg-orange-500/20 text-orange-300 border-orange-400/40 hover:bg-orange-500/30" }
 ]
 
-// Define animation variants for cleaner code
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2, // Stagger children animation
-    }
-  }
-}
-
-const slideInLeft = {
-  hidden: { opacity: 0, x: -100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
-}
-
-const slideInRight = {
-  hidden: { opacity: 0, x: 100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
-}
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-}
-
+// Removed all variants
 
 const About = () => {
   const ref = useRef(null)
@@ -70,15 +45,15 @@ const About = () => {
       {/* Content Container */}
       <motion.div // Apply motion to the main content
         className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } } : { opacity: 0 }}
       >
         
         {/* Heading */}
         <motion.div 
           className="text-center mb-8 lg:mb-10"
-          variants={fadeIn}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.1 } } : { opacity: 0, y: 30 }}
         >
           <div className="flex items-center justify-center gap-3 mb-2">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-wide">
@@ -92,9 +67,8 @@ const About = () => {
           {/* Left - Image / Reel */}
           <motion.div
             className="w-full lg:w-1/2 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } } : { opacity: 0 }}
-            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeIn" } }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={isInView ? { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.2, ease: "easeOut" } } : { opacity: 0, x: -60 }}
           >
             <div className="h-64 w-64 sm:h-80 sm:w-80 lg:h-[45vh] lg:w-[45vh] rounded-full overflow-hidden shadow-2xl border-4 border-violet-400/20">
               <Image
@@ -111,13 +85,15 @@ const About = () => {
           {/* Right - Text Content */}
           <motion.div 
             className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left"
-            variants={slideInRight} // Slide in from the right
+            initial={{ opacity: 0, x: 60 }}
+            animate={isInView ? { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.3, ease: "easeOut" } } : { opacity: 0, x: 60 }}
           >
             
             {/* Who Am I Section */}
             <motion.div 
                 className="flex items-center justify-center lg:justify-start gap-2 mb-4"
-                variants={fadeIn}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.4 } } : { opacity: 0, y: 20 }}
             >
               <Video className="w-6 h-6 text-violet-400" />
               <h3 className="text-2xl sm:text-3xl font-bold text-violet-400">
@@ -127,7 +103,8 @@ const About = () => {
             
             <motion.p 
                 className="text-white text-base sm:text-lg leading-relaxed mb-6 max-w-2xl mx-auto lg:mx-0"
-                variants={fadeIn}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.5 } } : { opacity: 0, y: 20 }}
             >
               I&apos;m a passionate <span className="text-violet-400 font-semibold">Video Editor & Storyteller</span>
               {' '}who turns raw footage into captivating stories.
@@ -138,7 +115,8 @@ const About = () => {
             {/* Animated Skills */}
             <motion.div 
                 className="mb-8"
-                variants={fadeIn}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.6 } } : { opacity: 0, y: 20 }}
             >
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
                 <Edit className="w-5 h-5 text-violet-400" />
@@ -151,11 +129,7 @@ const About = () => {
                     <motion.span // Animate each skill badge
                       key={i}
                       initial={{ opacity: 0, scale: 0.5 }}
-                      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                      transition={{ 
-                          duration: 0.3, 
-                          delay: i * 0.05 + 0.5, // Stagger delay
-                      }}
+                      animate={isInView ? { opacity: 1, scale: 1, transition: { duration: 0.3, delay: i * 0.05 + 0.7 } } : { opacity: 0, scale: 0.5 }}
                       className={`flex items-center gap-2 px-3 py-2 text-sm rounded-full border hover:scale-105 transition-all duration-200 cursor-default ${skill.color}`}
                     >
                       <IconComponent className="w-4 h-4" />
@@ -169,7 +143,8 @@ const About = () => {
             {/* Stats */}
             <motion.div 
                 className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center lg:justify-start"
-                variants={fadeIn}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.8 } } : { opacity: 0, y: 20 }}
             >
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start gap-2 mb-1">

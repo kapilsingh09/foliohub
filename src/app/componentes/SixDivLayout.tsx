@@ -31,7 +31,7 @@ const videos: Video[] = [
     views: 0,
   },
   {
-    src: "/brothers.mp4",
+    src: "videos/brothers (1).mp4",
     title: "Brotherhood Ride",
     description: "Two brothers, one passion – cinematic storytelling on wheels",
     views: 0,
