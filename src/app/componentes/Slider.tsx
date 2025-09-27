@@ -37,12 +37,12 @@ const clients = [
       "The promo video for my business was next-level. The editing style was modern, with smooth cuts and dynamic effects that made my brand stand out. Communication was great and revisions were handled quickly. Will be back for more projects!",
   },
   {
-    name: "Sofia Patel",
+    name: "Rahul Sharma",
     comment:
       "I needed a cinematic travel vlog and got exactly that! The editor brought my footage to life with creative pacing, beautiful color work, and perfect music choices. My YouTube audience loved it. Best video editing experience I've had.",
   },
   {
-    name: "Noah Kim",
+    name: "Anjali Verma",
     comment:
       "Incredible job on my short film edit. The storytelling through visuals and sound design was spot on. Every scene flowed perfectly and the attention to detail was impressive. Professional, creative, and reliable video editor.",
   },
@@ -56,7 +56,28 @@ const clients = [
     comment:
       "Real estate walkthrough videos were edited to perfection. The pacing, color correction, and added graphics made my listings stand out and attract more buyers. Great communication and top-notch quality every time.",
   },
+  {
+    name: "Karan Patel",
+    comment:
+      "The wedding highlight video was breathtaking. The cinematic touch, attention to detail, and music synchronization made it unforgettable. Truly exceeded expectations!",
+  },
+  {
+    name: "Neha Reddy",
+    comment:
+      "My fashion brand launch video looked world-class thanks to the sleek edits and color grading. The energy of the cuts matched the vibe of our campaign perfectly.",
+  },
+  {
+    name: "Rohit Singh",
+    comment:
+      "I hired for a travel vlog series, and each episode felt like a Netflix production. The storytelling through visuals was brilliant. Will definitely collaborate again.",
+  },
+  {
+    name: "Elena Rossi",
+    comment:
+      "Corporate event recap was edited beautifully. The pacing, graphics, and music brought our brand presence to life. Very professional and fast turnaround.",
+  },
 ];
+
 
 const cardWidth = 336;
 const totalCards = clients.length;

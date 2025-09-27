@@ -112,12 +112,12 @@ const HeroSection = () => {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-16 w-full transition-all duration-500 ease-in-out z-9">
-  <div className="absolute inset-0 flex items-center justify-between h-full px-4 sm:px-6 md:px-8 text-sm sm:text-md transition-all duration-500 ease-in-out">
+  <div className="absolute inset-0 flex items-center justify-between h-full px-4 sm:px-6 md:px-8 text-sm sm:text-md transition-all duration-500 ease-in-out z-[9999]">
 
     {/* First Link */}
     <Link
       href="/videoeditor"
-      className="flex text-white font-medium hover:underline cursor-pointer transition-all duration-300 ease-in-out text-xs sm:text-sm"
+      className="flex text-white font-medium hover:underline cursor-pointer transition-all duration-300 ease-in-out text-xs sm:text-sm px-2 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-white/10"
     >
       <span className="hidden sm:inline">Discover my latest edits</span>
       <span className="sm:hidden">Latest edits</span>
@@ -126,11 +126,11 @@ const HeroSection = () => {
 
     {/* Second Link */}
     <Link
-      href="/videoeditor"
-      className="flex items-center justify-center text-white font-medium hover:underline transition-all duration-300 ease-in-out text-xs sm:text-sm"
+      href="/more/videos"
+      className="flex items-center justify-center text-white font-medium hover:underline transition-all duration-300 ease-in-out text-xs sm:text-sm px-2 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-white/10"
     >
-      <span className="hidden sm:inline">By Vichi — Video Editor</span>
-      <span className="sm:hidden">Vichi</span>
+      <span className="hidden sm:inline">Discover my more video</span>
+      <span className="sm:hidden">More video</span>
       <ArrowUpRight className="transition-transform duration-300 ease-in-out hover:translate-x-3 h-3 w-3 sm:h-4 sm:w-4" />
     </Link>
 
