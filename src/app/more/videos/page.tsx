@@ -1,21 +1,70 @@
-import React from 'react'
-import { PlayCircle, Clock, Calendar } from 'lucide-react'
+"use client"
 
-// Dummy data for the video grid (you'll replace this with your video data)
-const videoCatalogue = [
-  { title: "Cinematic Reel 2024", duration: "1:35", date: "Jan 15, 2024", thumbnail: "/path/to/cinematic_thumb.jpg" },
-  { title: "Vlog Editing Showcase", duration: "4:00", date: "Feb 28, 2024", thumbnail: "/path/to/vlog_thumb.jpg" },
-  { title: "Motion Graphics Demo", duration: "0:45", date: "Mar 10, 2024", thumbnail: "/path/to/motion_thumb.jpg" },
-  { title: "Client Project - Ad", duration: "0:30", date: "Apr 05, 2024", thumbnail: "/path/to/ad_thumb.jpg" },
+import React, { useState } from 'react'
+import { PlayCircle, Clock, Calendar } from 'lucide-react'
+import Player from '@/app/componentes/player/Player'
+
+// Define the type for video data (if not exported from Player)
+type VideoData = {
+  title: string
+  duration: string
+  date: string
+  thumbnail: string
+  src?: string
+  description?: string
+}
+
+// Dummy data for the video grid (replace with your real video data)
+const videoCatalogue: VideoData[] = [
+  { 
+    title: "Cinematic Reel 2024", 
+    duration: "1:35", 
+    date: "Jan 15, 2024", 
+    thumbnail: "/path/to/cinematic_thumb.jpg",
+    src: "/videos/cinematic_reel_2024.mp4",
+    description: "A fast-paced cinematic showcase of 2024 highlights."
+  },
+  { 
+    title: "Vlog Editing Showcase", 
+    duration: "4:00", 
+    date: "Feb 28, 2024", 
+    thumbnail: "/path/to/vlog_thumb.jpg",
+    src: "/videos/vlog_editing_showcase.mp4",
+    description: "A fun, energetic vlog edit with creative transitions."
+  },
+  { 
+    title: "Motion Graphics Demo", 
+    duration: "0:45", 
+    date: "Mar 10, 2024", 
+    thumbnail: "/path/to/motion_thumb.jpg",
+    src: "/videos/motion_graphics_demo.mp4",
+    description: "A quick demo of motion graphics and animation."
+  },
+  { 
+    title: "Client Project - Ad", 
+    duration: "0:30", 
+    date: "Apr 05, 2024", 
+    thumbnail: "/path/to/ad_thumb.jpg",
+    src: "/videos/client_project_ad.mp4",
+    description: "A short, punchy ad for a client campaign."
+  },
   // Add more videos here...
 ]
 
 const VideoCatalogPage = () => {
+  const [isCardOpen, setIsCardOpen] = useState(false)
+  const [activeVideo, setActiveVideo] = useState<VideoData | null>(null)
+
+  const handleVideoClick = (video: VideoData) => {
+    setActiveVideo(video)
+    setIsCardOpen(true)
+  }
+
   return (
     <div className='min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8'>
       
       {/* Catalog Header */}
-      <header className='max-w-7xl mx-auto mb-10 text-center lg:text-left'>
+      <header className='max-w-7xl mt-10 mx-auto mb-10 text-center lg:text-left'>
         <h1 className='text-4xl sm:text-5xl font-extrabold text-violet-400 mb-2'>
           My Video Editing Portfolio
         </h1>
@@ -25,45 +74,12 @@ const VideoCatalogPage = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className='max-w-7xl mx-auto'>
+      <main className='max-w-7xl mt-20 mx-auto'>
         
         {/* Featured Video Section (Responsive layout) */}
-        <section className='flex flex-col lg:flex-row gap-8 mb-16'>
-          
-          {/* Video Player Placeholder - Left Side */}
-          <div className='w-full lg:w-3/5 aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl relative group'>
-            {/* Replace this div with your actual video component (e.g., iframe, next/video, etc.) */}
-            <div className='w-full h-full flex items-center justify-center text-gray-500'>
-              <PlayCircle size={64} className="opacity-70 group-hover:opacity-100 transition duration-300" />
-            </div>
-            {/* Example of an overlay title */}
-            <div className='absolute bottom-0 left-0 bg-black/50 p-4 w-full'>
-                <h3 className='text-lg font-bold text-white'>Featured Work: My Best Of Reel</h3>
-            </div>
-          </div>
-
-          {/* Video Details/Description - Right Side */}
-          <div className='w-full lg:w-2/5 flex flex-col justify-center'>
-            <h2 className='text-3xl font-bold text-white mb-4 border-b border-violet-400/30 pb-2'>
-              The Power of Storytelling
-            </h2>
-            <p className='text-gray-300 leading-relaxed mb-6'>
-              This reel represents my core skills, focusing on sharp transitions, impactful color grading, and precise audio synchronization. Every frame is designed to elicit an emotional response.
-            </p>
-            
-            {/* Meta Data / Stats */}
-            <div className='flex flex-wrap gap-4 text-sm text-gray-400'>
-              <span className='flex items-center gap-2 px-3 py-1 bg-violet-500/10 rounded-full border border-violet-500/30'>
-                <Clock className='w-4 h-4 text-violet-300' />
-                Total Duration: 2:15
-              </span>
-              <span className='flex items-center gap-2 px-3 py-1 bg-violet-500/10 rounded-full border border-violet-500/30'>
-                <Calendar className='w-4 h-4 text-violet-300' />
-                Published: Sep 2024
-              </span>
-            </div>
-          </div>
-        </section>
+        {isCardOpen && activeVideo && (
+          <Player video={activeVideo} close={() => setIsCardOpen(false)} />
+        )}
 
         {/* Video Catalogue Grid Section */}
         <section>
@@ -76,11 +92,22 @@ const VideoCatalogPage = () => {
               <div 
                 key={index} 
                 className='bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-violet-500/30 transition-shadow duration-300 cursor-pointer group hover:scale-[1.02]'
+                onClick={() => handleVideoClick(video)}
               >
                 {/* Thumbnail / Placeholder */}
                 <div className='aspect-video bg-gray-700 relative flex items-center justify-center'>
-                  <PlayCircle size={32} className="text-white opacity-80 group-hover:opacity-100 transition-opacity" />
-                  {/* <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" /> */}
+                  {video.thumbnail ? (
+                    <img 
+                      src={video.thumbnail} 
+                      alt={video.title} 
+                      className="w-full h-full object-cover transition-opacity group-hover:opacity-90"
+                    />
+                  ) : (
+                    <PlayCircle size={32} className="text-white opacity-80 group-hover:opacity-100 transition-opacity" />
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <PlayCircle size={48} className="text-violet-400 drop-shadow-lg" />
+                  </div>
                 </div>
                 
                 {/* Video Info */}
