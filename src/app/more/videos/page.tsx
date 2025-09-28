@@ -1,8 +1,9 @@
 "use client"
 
 import React, { useState } from 'react'
-import { PlayCircle, Clock, Calendar } from 'lucide-react'
+import { PlayCircle, Clock, Calendar, Play } from 'lucide-react'
 import Player from '@/app/componentes/player/Player'
+import { motion } from 'motion/react'
 
 // Define the type for video data (if not exported from Player)
 type VideoData = {
@@ -21,7 +22,7 @@ const videoCatalogue: VideoData[] = [
     duration: "1:35", 
     date: "Jan 15, 2024", 
     thumbnail: "/path/to/cinematic_thumb.jpg",
-    src: "/videos/cinematic_reel_2024.mp4",
+    src: "/videos/brothers (1).mp4",
     description: "A fast-paced cinematic showcase of 2024 highlights."
   },
   { 
@@ -29,7 +30,7 @@ const videoCatalogue: VideoData[] = [
     duration: "4:00", 
     date: "Feb 28, 2024", 
     thumbnail: "/path/to/vlog_thumb.jpg",
-    src: "/videos/vlog_editing_showcase.mp4",
+    src: "/finalBMW.mp4",
     description: "A fun, energetic vlog edit with creative transitions."
   },
   { 
@@ -37,7 +38,7 @@ const videoCatalogue: VideoData[] = [
     duration: "0:45", 
     date: "Mar 10, 2024", 
     thumbnail: "/path/to/motion_thumb.jpg",
-    src: "/videos/motion_graphics_demo.mp4",
+    src: "/videos/OverlayThumb.mp4",
     description: "A quick demo of motion graphics and animation."
   },
   { 
@@ -45,7 +46,15 @@ const videoCatalogue: VideoData[] = [
     duration: "0:30", 
     date: "Apr 05, 2024", 
     thumbnail: "/path/to/ad_thumb.jpg",
-    src: "/videos/client_project_ad.mp4",
+    src: "/videos/greenBMW.mp4",
+    description: "A short, punchy ad for a client campaign."
+  },
+  { 
+    title: "Client Project - Ad", 
+    duration: "0:30", 
+    date: "Apr 05, 2024", 
+    thumbnail: "/path/to/ad_thumb.jpg",
+    src: "/videos/Dhruv_Masterpiease.mp4",
     description: "A short, punchy ad for a client campaign."
   },
   // Add more videos here...
@@ -87,12 +96,17 @@ const VideoCatalogPage = () => {
             More Projects
           </h2>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+          {/* Use grid-cols-3 for normal, and don't show image if not present */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
             {videoCatalogue.map((video, index) => (
-              <div 
-                key={index} 
+              <motion.div
+                key={index}
                 className='bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-violet-500/30 transition-shadow duration-300 cursor-pointer group hover:scale-[1.02]'
                 onClick={() => handleVideoClick(video)}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.08, duration: 0.5, ease: "easeOut" }}
+                whileHover={{ scale: 1.03 }}
               >
                 {/* Thumbnail / Placeholder */}
                 <div className='aspect-video bg-gray-700 relative flex items-center justify-center'>
@@ -102,12 +116,16 @@ const VideoCatalogPage = () => {
                       alt={video.title} 
                       className="w-full h-full object-cover transition-opacity group-hover:opacity-90"
                     />
-                  ) : (
+                  ) : null}
+                  {/* Only show PlayCircle if no image */}
+                  {!video.thumbnail && (
                     <PlayCircle size={32} className="text-white opacity-80 group-hover:opacity-100 transition-opacity" />
                   )}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <PlayCircle size={48} className="text-violet-400 drop-shadow-lg" />
-                  </div>
+                  <motion.div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-black/50 backdrop-blur-sm rounded-full p-4">
+                      <Play className="w-8 h-8 text-white" fill="white" />
+                    </div>
+                  </motion.div>
                 </div>
                 
                 {/* Video Info */}
@@ -126,7 +144,7 @@ const VideoCatalogPage = () => {
                     </span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>

@@ -9,7 +9,7 @@ import CopyEmailButton from "./ui/CopyEmailButton";
 import Player from "./player/Player";
 import { BackgroundLines } from "./ui/background-lines";
 
-
+import { useRouter } from "next/navigation";
 // Define types for videos and toolIcons
 type Video = {
   src: string;
@@ -26,8 +26,8 @@ type ToolIcon = {
 const videos: Video[] = [
   {
     src: "videos/OrigionalVideo.mp4",
-    title: "Cool Car Edits",
-    description: "High-octane car edit with fast cuts and smooth transitions",
+    title: "Overlay Edit Skills",
+    description: "Demonstrating creative overlay techniques, advanced transitions, and visual storytelling to enhance video edits.",
     views: 0,
   },
   {
@@ -111,13 +111,17 @@ const SixDivLayout = () => {
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(scrollRef, { once: true });
-
+  const router = useRouter()
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % texts.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  // const handleRedicret = ()=>{
+
+  // }
 
   // 🔥 Custom hook for lazy video loading
   const LazyMotionVideo = ({
@@ -441,7 +445,10 @@ const SixDivLayout = () => {
         </motion.div>
 
         <motion.div
-          className="h-[40vh] md:h-[50vh] w-full md:w-[70%] bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 rounded-2xl shadow-lg flex items-center justify-center text-slate-900 text-xl font-bold relative overflow-hidden group cursor-pointer"
+        //navigate to more videos
+        
+        onClick={()=> {router.push("/more/videos") }}
+          className="h-[40vh]  md:h-[50vh] w-full md:w-[70%] bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 rounded-2xl shadow-lg flex items-center justify-center text-slate-900 text-xl font-bold relative overflow-hidden group cursor-pointer"
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           initial={{ opacity: 0, x: 40 }}
@@ -449,7 +456,7 @@ const SixDivLayout = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12"
+            className="absolute  inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12"
             animate={{ x: ["-100%", "200%"] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -457,11 +464,14 @@ const SixDivLayout = () => {
             <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
               Portfolio Showcase
             </motion.div>
+
             <motion.p className="text-xs md:text-base font-normal mt-2 text-neutral-300 opacity-80">
-              More projects coming soon
+              More videos on the way see all my prev
             </motion.p>
+
           </motion.div>
         </motion.div>
+        
       </motion.div>
     </motion.div>
   );
