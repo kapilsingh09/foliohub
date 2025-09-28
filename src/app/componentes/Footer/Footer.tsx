@@ -4,7 +4,7 @@ import { Instagram, Twitter, Github } from 'lucide-react'
 const socials = [
   { name: 'Instagram', href: 'https://instagram.com', icon: <Instagram /> },
   { name: 'Twitter', href: 'https://twitter.com', icon: <Twitter /> },
-  { name: 'Github', href: 'https://github.com', icon: <Github /> },
+  { name: 'Github', href: 'https://github.com/kapilsingh09', icon: <Github /> },
 ]
 
 const Footer = () => {
