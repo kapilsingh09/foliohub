@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "./componentes/Navbar/Navbar";
 import Footer from "./componentes/Footer/Footer";
 import SmoothScrollProvider from "./componentes/SmoothScrollProvider";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,6 +34,7 @@ export default function RootLayout({
           <div className="relative w-full flex items-center justify-center">
             <Navbar />
           </div>
+          <SpeedInsights />
           {children}
           <Footer />
         </SmoothScrollProvider>

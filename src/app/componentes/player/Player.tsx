@@ -228,7 +228,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
         }}
       >
         <div
-          className="absolute sm:overflow-y-hidden inset-0"
+          className="absolute   sm:overflow-y-hidden inset-0"
           style={{
             backdropFilter: isPlaying ? "blur(12px)" : "blur(6px)",
             transition: "backdrop-filter 0.3s ease",
@@ -243,10 +243,10 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
           transition={{ type: "spring", duration: 0.4 }}
           className={`
             relative w-full max-w-4xl sm:overflow-y-hidden max-h-[90vh]
-            bg-gradient-to-br from-neutral-900/95 to-neutral-800/95
+             bg-zinc-900
             backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10
             flex flex-col sm:flex-row
-            sm:max-h-[90vh] max-h-[80vh] min-h-[240px] sm:min-h-[320px]
+            sm:max-h-[90vh]  min-h-[240px] sm:min-h-[320px]
           `}
         >
           {/* button */}
@@ -274,7 +274,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                 className={`
                   w-full h-full object-contain object-center
                   rounded-t-2xl sm:rounded-l-2xl sm:rounded-t-none
-                  max-h-[22vh] sm:max-h-[60vh]
+                  max-h-[42vh] sm:max-h-[60vh]
                 `}
                 preload="auto"
                 playsInline
@@ -283,7 +283,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                   transform: "translateZ(0)",
                   backfaceVisibility: "hidden",
                   perspective: 1000,
-                  background: "#18181b",
+                  // background: "#18181b",
                 }}
               />
               {/* loading state */}
@@ -388,7 +388,7 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                                 aria-hidden="true"
                               />
                             )}
-                            <span className="relative z-10 flex whitespace-nowrap w-full justify-center">
+                            <span className="relative z-10  flex whitespace-nowrap w-full justify-center">
                               {duration > 0
                                 ? `${formatTime(currentTime)} / ${formatTime(duration)}`
                                 : video.duration || "0:00"}
@@ -401,10 +401,10 @@ const Player: React.FC<PlayerProps> = ({ close, video }) => {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={toggleFullscreen}
-                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-1.5 transition-all duration-200 sm:inline-flex hidden"
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all duration-200 sm:inline-flex hidden"
                           aria-label="Fullscreen"
                         >
-                          <Monitor size={14} />
+                          <Monitor className="sm:w-4 sm:h-4 w-2.5 h-2.5" />
                         </motion.button>
                       </div>
                     </div>
