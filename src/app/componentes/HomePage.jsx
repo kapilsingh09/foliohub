@@ -86,14 +86,14 @@ const HeroSection = () => {
       <div className="absolute bottom-7 left-0 right-0 w-full transition-all duration-500 ease-in-out z-9">
         <div className="absolute inset-0 flex items-center justify-between h-full px-4 sm:px-6 md:px-8 text-sm sm:text-md transition-all duration-500 ease-in-out z-[9999]">
           {/* First Link */}
-          <Link
-            href="/videoeditor"
+          <button
+            
             className="flex items-center text-white font-medium hover:underline cursor-pointer transition-all duration-300 ease-in-out text-xs sm:text-sm px-2 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-white/10"
           >
             <span className="hidden sm:inline">Discover my latest edits</span>
             <span className="sm:hidden">Latest edits</span>
             <ArrowDown className="ml-1 h-4 w-3 sm:h-6 sm:w-4 transition-transform duration-300 ease-in-out hover:translate-x-1" />
-          </Link>
+          </button>
 
           {/* Second Link */}
           <Link
