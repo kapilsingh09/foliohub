@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import HomePage from "@/app/componentes/HomePage";
+import HomePage from "@/app/componentes/Homepage/HomePage";
 import SixDivLayout from "./componentes/SixDivLayout";
 import ContactForm from "./componentes/ContactForm";
 import Slider from "./componentes/Slider";

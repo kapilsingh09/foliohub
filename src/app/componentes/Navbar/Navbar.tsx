@@ -14,6 +14,14 @@ const Navbar = () => {
     }
   };
 
+  const scrollHome = () => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }
   const scrollAbout = () => {
     if (typeof window !== 'undefined') {
       window.scrollTo({
@@ -57,6 +65,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             href="/"
+            onClick={scrollHome }
             className={`font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-1 transition-all duration-300 ${
               scrolled ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"
             }`}

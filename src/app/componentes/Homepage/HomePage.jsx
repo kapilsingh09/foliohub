@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, ArrowDown } from "lucide-react";
-import { Spotlight } from "./ui/Spotlight";
+import { Spotlight } from ".././ui/Spotlight";
 
 const dynamicWords = [
   { word: "editing", color: "text-white" },
@@ -62,25 +62,29 @@ const HeroSection = () => {
         Your Vision, Seamlessly Edited
       </motion.h1>
       <motion.p
-        className="font-normal text-base sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mx-auto max-w-2xl mt-8 p-2 text-center tracking-wide leading-relaxed flex-wrap z-10"
-        initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <span>
-          I help brands and creators tell powerful stories through seamless video{" "}
-          <motion.span
-            key={dynamicWords[index].word}
-            className={`py-1.5 px-2 rounded-xl font-normal text-base sm:text-xl md:text-2xl tracking-wide ${dynamicWords[index].color} bg-white/10`}
-            initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(6px)" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {displayedWord}
-          </motion.span>
-        </span>
-      </motion.p>
+  className="font-normal text-base sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mx-auto max-w-2xl mt-8 p-2 text-center tracking-wide leading-relaxed flex-wrap z-10"
+  initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+  transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+>
+  <span>
+    I help <span className="bg-white text-transparent bg-clip-text  rounded-md  font-semibold animate-pulse">brands</span> and creators tell powerful stories through seamless video{" "}
+    <span className="inline-block w-[100px] mr-4 bg-white/20 rounded-lg backdrop:blur-2xl  items-center justify-center"> {/* Fixed width */}
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={dynamicWords[index].word}
+          className={`inline-block  rounded-xl font-normal text-base sm:text-xl md:text-2xl  tracking-wide ${dynamicWords[index].color}`}
+          initial={{ opacity: 0, y: 14, scale: 0.95, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -14, scale: 0.95, filter: "blur(10px)" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {displayedWord}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  </span>
+</motion.p>
 
       {/* Buttons at the bottom center */}
       <div className="absolute bottom-7 left-0 right-0 w-full transition-all duration-500 ease-in-out z-9">
