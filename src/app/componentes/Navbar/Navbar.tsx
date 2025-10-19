@@ -65,7 +65,8 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             href="/"
-            onClick={scrollHome }
+            // behavior="smooth"
+            onClick={scrollHome}
             className={`font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-1 transition-all duration-300 ${
               scrolled ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"
             }`}
@@ -83,6 +84,7 @@ const Navbar = () => {
           >
             <Link
               href="/"
+              onClick={scrollHome}
               className="relative px-1 sm:px-2 py-1 transition duration-200 hover:text-pink-400 
                 after:content-[''] after:block after:h-0.5 after:bg-pink-400 after:scale-x-0 
                 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"

@@ -3,7 +3,8 @@ import { motion, AnimatePresence, useInView, useScroll, useSpring, useTransform 
 import { useRef, useState, useEffect } from "react"
 import { Pause, Play, Volume2, VolumeX, Maximize, Info, X, FileVideo, Clock, HardDrive, Monitor } from "lucide-react"
 import React from "react"
-
+import { img } from "motion/react-client"
+import Image from "next/image"
 interface VideoSliderProps {
   containerRef?: React.RefObject<HTMLDivElement>
 }
@@ -18,7 +19,7 @@ const videos = [
     codec: "H.264",
     duration: "4:32",
     created: "Dec 15, 2023",
-    thumbnail: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=300&fit=crop&crop=center",
+    thumbnail: "/2raw.png",
     description: "Original unedited footage"
   },
   {
@@ -30,7 +31,7 @@ const videos = [
     codec: "H.264",
     duration: "3:18",
     created: "Nov 28, 2023",
-    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=300&fit=crop&crop=center",
+    thumbnail: "/2.png",
     description: "Professionally edited version"
   }
 ]
@@ -380,7 +381,14 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
 
             <div className="flex-1 flex items-center justify-center px-2">
               <div className="hover:bg-white/20 backdrop-blur-sm px-2 md:px-4 py-1 md:py-2 rounded-full text-white transition-all duration-200 text-xs md:text-sm font-medium border border-white/10">
-                {formatTime(currentTime)} / {durations[videoIndex] ? formatTime(durations[videoIndex]) : videos[videoIndex].duration}
+               {formatTime(currentTime)} / {
+  durations[videoIndex]
+    ? formatTime(durations[videoIndex])
+    : videos[videoIndex]?.duration
+      ? formatTime(videos[videoIndex].duration)
+      : "00:22"
+}
+
               </div>
             </div>
 
@@ -408,68 +416,81 @@ const VideoSlider: React.FC<VideoSliderProps> = () => {
             <span className="text-white/90 text-xs md:text-sm font-semibold tracking-wide">SELECT VIDEO VERSION</span>
           </div>
           
-          <div className="grid grid-cols-2 gap-3 md:gap-6"> 
-            {videos.map((video, index) => (
+         <div className="grid grid-cols-2 gap-3 md:gap-6">
+      {videos.map((video, index) => (
+        <motion.div
+          key={index}
+          onClick={() => handleVideoSelection(index)}
+          className={`relative cursor-pointer group overflow-hidden  ${
+            videoIndex === index
+              ? "ring-2 md:ring-3 ring-red-500 rounded-xl shadow-md "
+              : "hover:ring-2 hover:ring-white/30 rounded-xl"
+          } transition-all duration-300`}
+          whileHover={{ scale: 1.05, y: -5 }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: index * 0.1 + 0.2 }}
+          aria-current={videoIndex === index}
+          tabIndex={0}
+          role="button"
+        >
+          {/* Thumbnail Image */}
+          <div className="relative  bg-transparent overflow-hidden rounded-">
+            <Image
+              src={video.thumbnail}
+              alt={`${video.name} thumbnail`}
+              width={400}
+              height={300}
+              // fill
+              // priority={index === 0}
+              className="object-cover rounded-xl 
+              w-full
+              transition-transform duration-500 group-hover:scale-110"
+            />
+
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent rounded-xl" />
+
+            {/* Video Info - absolutely positioned */}
+            <div className="absolute bottom-0 left-0 right-0 p-2 md:p-2 text-white z-10">
+              <h4 className="font-semibold text-sm md:text-base mb-1 truncate">
+                {video.name}
+              </h4>
+              <p className="text-xs md:text-sm text-gray-300 line-clamp-2">
+                {video.description}
+              </p>
+            </div>
+
+            {/* Active indicator */}
+            {videoIndex === index && (
               <motion.div
-                key={index}
-                onClick={() => handleVideoSelection(index)}
-                className={`relative cursor-pointer group overflow-hidden ${
-                  videoIndex === index 
-                    ? 'ring-2 md:ring-3 ring-red-500 rounded-xl shadow-md shadow-blue-500/50' 
-                    : 'hover:ring-2 hover:ring-white/30 rounded-xl'
-                } transition-all duration-300`}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: index * 0.1 + 0.2 }}
-                aria-current={videoIndex === index}
-                tabIndex={0}
-                role="button"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-2 md:top-3 right-2 md:right-3 w-6 h-6 md:w-8 md:h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg z-20"
               >
-                {/* Thumbnail Image - Responsive height */}
-                <div className="relative h-20 md:h-32 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden rounded-xl">
-                  <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center rounded-xl">
-                    <span className="text-white text-sm">{video.name}</span>
-                  </div>
-                  
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-xl" />
-                  
-                  {/* Active indicator */}
-                  {videoIndex === index && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-2 md:top-3 right-2 md:right-3 w-6 h-6 md:w-8 md:h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg"
-                    >
-                      <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full" />
-                    </motion.div>
-                  )}
-                </div>
-                
-                {/* Video Info - Responsive text */}
-                <div className="p-2 md:p-3 bg-white/5 backdrop-blur-sm border-t border-white/10 rounded-b-xl">
-                  <h4 className="font-semibold text-white text-xs md:text-sm mb-1">{video.name}</h4>
-                  <p className="text-xs text-gray-300 mb-1 md:mb-2 line-clamp-2">{video.description}</p>
-                </div>
-                
-                {/* Loading state for transitions */}
-                <AnimatePresence>
-                  {isTransitioning && videoIndex === index && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center rounded-xl"
-                    >
-                      <div className="w-3 h-3 md:w-4 md:h-4 border border-white/40 border-t-white rounded-full animate-spin" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full" />
               </motion.div>
-            ))}
+            )}
+
+            {/* Loading overlay */}
+            <AnimatePresence>
+              {isTransitioning && videoIndex === index && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center rounded-xl z-30"
+                >
+                  <div className="w-3 h-3 md:w-4 md:h-4 border border-white/40 border-t-white rounded-full animate-spin" />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
+        </motion.div>
+      ))}
+    </div>
+  
           
           {/* Selected video indicator */}
           <div className="text-center mt-3 md:mt-4">

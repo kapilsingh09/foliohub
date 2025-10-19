@@ -7,10 +7,26 @@ import { ArrowUpRight, ArrowDown } from "lucide-react";
 import { Spotlight } from ".././ui/Spotlight";
 
 const dynamicWords = [
-  { word: "editing", color: "text-white" },
-  { word: "visuals", color: "text-white" },
-  { word: "stories", color: "text-white" },
-  { word: "clients", color: "text-white" },
+  {
+    word: "editing",
+    color:
+      "bg-gradient-to-r from-pink-500 via-red-400 to-orange-400 text-transparent bg-clip-text",
+  },
+  {
+    word: "visuals",
+    color:
+      "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 text-transparent bg-clip-text",
+  },
+  {
+    word: "stories",
+    color:
+      "bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 text-transparent bg-clip-text",
+  },
+  {
+    word: "clients",
+    color:
+      "bg-gradient-to-r from-emerald-400 via-green-500 to-teal-400 text-transparent bg-clip-text",
+  },
 ];
 
 const scrollDown = () => {
@@ -69,18 +85,19 @@ const HeroSection = () => {
 >
   <span>
     I help <span className="bg-white text-transparent bg-clip-text  rounded-md  font-semibold animate-pulse">brands</span> and creators tell powerful stories through seamless video{" "}
-    <span className="inline-block w-[100px] mr-4 bg-white/20 rounded-lg backdrop:blur-2xl  items-center justify-center"> {/* Fixed width */}
+    <span className="inline-block w-[100px]  rounded-lg backdrop:blur-2xl  items-center justify-center"> {/* Fixed width */}
       <AnimatePresence mode="wait">
         <motion.span
-          key={dynamicWords[index].word}
-          className={`inline-block  rounded-xl font-normal text-base sm:text-xl md:text-2xl  tracking-wide ${dynamicWords[index].color}`}
-          initial={{ opacity: 0, y: 14, scale: 0.95, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -14, scale: 0.95, filter: "blur(10px)" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {displayedWord}
-        </motion.span>
+  key={dynamicWords[index].word}
+  className={`inline-block font-semibold text-base sm:text-xl md:text-2xl tracking-wide transition-all duration-500 ${dynamicWords[index].color}`}
+  initial={{ opacity: 0, filter: "blur(10px)" }}
+  animate={{ opacity: 1, filter: "blur(0px)" }}
+  exit={{ opacity: 0,   filter: "blur(10px)" }}
+  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+>
+  {displayedWord}
+</motion.span>
+
       </AnimatePresence>
     </span>
   </span>

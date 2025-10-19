@@ -12,7 +12,7 @@ import Preloader from "./componentes/Preloader";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);   
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,10 +39,11 @@ export default function Home() {
             >
               <Preloader />
             </motion.div>
+
           ) : (
             <motion.div
               key="content"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0 }}  
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
@@ -53,7 +54,7 @@ export default function Home() {
               <Slider />
               <ContactForm />
             </motion.div>
-          )}
+           )}
         </AnimatePresence>
       </section>
     </main>

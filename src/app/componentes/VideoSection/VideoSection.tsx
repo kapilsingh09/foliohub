@@ -43,11 +43,13 @@ const EditorShowcase = () => {
             <div className="relative z-10 w-full flex justify-start h-[30vh]">
               <div className="relative overflow-hidden rounded-2xl">
                 <Image
-                  src="/RINTARO TSUMUGI AND KAORUKO WAGURI(1).jpeg"
+
+ 
+                  src="/2raw.png"
                   alt="Before Editing"
                   width={400}
                   height={400}
-                  className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover rounded-2xl transition-transform duration-500 "
                   priority
                 />
               </div>
@@ -85,11 +87,11 @@ const EditorShowcase = () => {
             <div className="w-full flex justify-end">
               <div className="relative overflow-hidden rounded-2xl group">
                 <Image
-                  src="/RINTARO TSUMUGI AND KAORUKO WAGURI(1).jpeg"
+                  src="/2.png"
                   alt="After Editing"
                   width={400}
                   height={400}
-                  className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover rounded-2xl transition-transform duration-500 "
                   priority
                 />
               </div>
